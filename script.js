@@ -303,10 +303,10 @@ const pendingPosters = [];
 function buildStore() {
   const scene = document.querySelector('a-scene');
 
-  // 1. DVD wall textures
-  applyCanvasTexture('back-wall-dvds', generateDVDWallTexture(6, 22));
-  applyCanvasTexture('left-wall-dvds', generateDVDWallTexture(6, 15));
-  applyCanvasTexture('right-wall-dvds', generateDVDWallTexture(6, 15));
+  // 1. DVD wall textures - much higher density to look packed
+  applyCanvasTexture('back-wall-dvds', generateDVDWallTexture(8, 75));
+  applyCanvasTexture('left-wall-dvds', generateDVDWallTexture(8, 48));
+  applyCanvasTexture('right-wall-dvds', generateDVDWallTexture(8, 48));
 
   // 2. Back wall genre signs
   const backSigns = [
@@ -345,7 +345,7 @@ function buildStore() {
 function createAisle(scene, genre, x, label) {
   const movies = movieData[genre];
   const aisleZ = -1;
-  const aisleLen = 8;
+  const aisleLen = 8.5;
 
   // Shelf body
   const shelf = document.createElement('a-box');
@@ -356,10 +356,10 @@ function createAisle(scene, genre, x, label) {
   shelf.setAttribute('material', 'color: #4a3320; roughness: 0.9; shader: standard');
   scene.appendChild(shelf);
 
-  // Shelf bars (horizontal edges)
-  for (let row = 0; row < 3; row++) {
+  // Shelf bars (horizontal edges) - 4 rows of shelves
+  for (let row = 0; row < 4; row++) {
     const bar = document.createElement('a-box');
-    bar.setAttribute('position', `${x} ${0.12 + row * 0.85} ${aisleZ}`);
+    bar.setAttribute('position', `${x} ${0.12 + row * 0.55} ${aisleZ}`);
     bar.setAttribute('width', '0.28');
     bar.setAttribute('height', '0.04');
     bar.setAttribute('depth', `${aisleLen}`);
@@ -379,25 +379,27 @@ function createAisle(scene, genre, x, label) {
   // Genre sign above aisle
   createSign(scene, label, `${x} 2.85 ${aisleZ}`, '0 0 0');
 
-  // Movies on left side (facing -x, rotation 0 -90 0)
-  const leftMovies = movies.slice(0, 6);
-  leftMovies.forEach((movie, i) => {
-    const col = i % 3;
-    const row = Math.floor(i / 3);
-    const pz = aisleZ - aisleLen / 2 + 1.5 + col * 2.2;
-    const py = 0.55 + row * 0.85;
-    createMoviePoster(scene, movie, x - 0.13, py, pz, -90);
-  });
+  // Movies on left side (facing -x, rotation 0 -90 0) - Densely packed: 4 rows of 8 columns = 32 movies!
+  for (let r = 0; r < 4; r++) {
+    for (let c = 0; c < 8; c++) {
+      const index = (r * 8 + c) % movies.length;
+      const movie = movies[index];
+      const pz = aisleZ - aisleLen / 2 + 0.8 + c * 0.98;
+      const py = 0.38 + r * 0.55;
+      createMoviePoster(scene, movie, x - 0.12, py, pz, -90, 0.45, 0.52);
+    }
+  }
 
-  // Movies on right side (facing +x, rotation 0 90 0)
-  const rightMovies = movies.slice(6, 12);
-  rightMovies.forEach((movie, i) => {
-    const col = i % 3;
-    const row = Math.floor(i / 3);
-    const pz = aisleZ - aisleLen / 2 + 1.5 + col * 2.2;
-    const py = 0.55 + row * 0.85;
-    createMoviePoster(scene, movie, x + 0.13, py, pz, 90);
-  });
+  // Movies on right side (facing +x, rotation 0 90 0) - Densely packed: 4 rows of 8 columns = 32 movies!
+  for (let r = 0; r < 4; r++) {
+    for (let c = 0; c < 8; c++) {
+      const index = (r * 8 + c) % movies.length;
+      const movie = movies[index];
+      const pz = aisleZ - aisleLen / 2 + 0.8 + c * 0.98;
+      const py = 0.38 + r * 0.55;
+      createMoviePoster(scene, movie, x + 0.12, py, pz, 90, 0.45, 0.52);
+    }
+  }
 
   // End cap — featured poster facing entrance
   const featured = movies[0];
@@ -407,16 +409,30 @@ function createAisle(scene, genre, x, label) {
 function createWallMovies(scene, genre, wall) {
   const movies = movieData[genre];
   const isLeft = wall === 'left';
-  const x = isLeft ? -14.85 : 14.85;
+  const x = isLeft ? -14.82 : 14.82;
   const rotY = isLeft ? 90 : -90;
 
-  movies.forEach((movie, i) => {
-    const col = i % 4;
-    const row = Math.floor(i / 4);
-    const z = -6 + col * 2.5;
-    const y = 0.6 + row * 0.95;
-    createMoviePoster(scene, movie, x, y, z, rotY);
-  });
+  // Create wall shelf bars for visual support
+  for (let r = 0; r < 3; r++) {
+    const bar = document.createElement('a-box');
+    bar.setAttribute('position', `${isLeft ? -14.88 : 14.88} ${0.12 + r * 0.85} -0.5`);
+    bar.setAttribute('width', '0.08');
+    bar.setAttribute('height', '0.04');
+    bar.setAttribute('depth', '16.5');
+    bar.setAttribute('material', 'color: #3a2515; roughness: 0.9; shader: standard');
+    scene.appendChild(bar);
+  }
+
+  // Place 3 rows of 12 columns = 36 movies on each wall!
+  for (let r = 0; r < 3; r++) {
+    for (let c = 0; c < 12; c++) {
+      const index = (r * 12 + c) % movies.length;
+      const movie = movies[index];
+      const z = -8.2 + c * 1.4;
+      const y = 0.55 + r * 0.85;
+      createMoviePoster(scene, movie, x, y, z, rotY, 0.52, 0.72);
+    }
+  }
 }
 
 function createMoviePoster(scene, movie, x, y, z, rotY, w, h) {
@@ -537,6 +553,28 @@ function initPointerLock() {
     }
   });
 }
+
+// ===== CUSTOM A-FRAME COMPONENTS =====
+
+AFRAME.registerComponent('boundary-check', {
+  tick: function () {
+    var pos = this.el.getAttribute('position');
+    var minX = -13.8;
+    var maxX = 13.8;
+    var minZ = -8.8;
+    var maxZ = 8.8;
+    var changed = false;
+
+    if (pos.x < minX) { pos.x = minX; changed = true; }
+    if (pos.x > maxX) { pos.x = maxX; changed = true; }
+    if (pos.z < minZ) { pos.z = minZ; changed = true; }
+    if (pos.z > maxZ) { pos.z = maxZ; changed = true; }
+
+    if (changed) {
+      this.el.setAttribute('position', pos);
+    }
+  }
+});
 
 // ===== INIT =====
 

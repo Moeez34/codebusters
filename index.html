@@ -67,7 +67,7 @@
     </a-assets>
 
     <!-- Camera & Controls Rig -->
-    <a-entity id="rig" position="0 0 7" movement-controls="speed: 0.15; fly: false">
+    <a-entity id="rig" position="0 0 7" wasd-controls="acceleration: 45; fly: false" boundary-check>
       <a-entity id="camera" camera look-controls="pointerLockEnabled: true" position="0 1.6 0">
         <!-- Laser controller / cursor interaction for clicking movies in VR or Desktop -->
         <a-cursor 
