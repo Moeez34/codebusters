@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blockbuster 3D — Your Premium Movie Store</title>
+  <meta name="description" content="Browse our immersive 3D Blockbuster movie store. Explore curated collections of Comedy, Action, and Science Fiction blockbusters. Click any movie to visit its IMDB page.">
+  <meta name="keywords" content="blockbuster, movies, 3D store, comedy, action, sci-fi, IMDB">
+  <meta name="theme-color" content="#08080f">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ===== Floating Particles ===== -->
+  <div id="particles" class="particles" aria-hidden="true"></div>
+
+  <!-- ===== Navigation ===== -->
+  <nav id="main-nav" class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-brand">
+      <span class="nav-logo" aria-hidden="true">🎬</span>
+      <span class="nav-title">BLOCKBUSTER 3D</span>
+    </div>
+    <div class="nav-links">
+      <a href="#comedy" class="nav-link" data-genre="comedy" id="nav-comedy">🎭 Comedy</a>
+      <a href="#action" class="nav-link" data-genre="action" id="nav-action">💥 Action</a>
+      <a href="#scifi" class="nav-link" data-genre="scifi" id="nav-scifi">🚀 Sci-Fi</a>
+    </div>
+  </nav>
+
+  <!-- ===== Hero Section ===== -->
+  <header id="hero" class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">
+        <span class="title-line title-line-1">BLOCKBUSTER</span>
+        <span class="title-line title-line-2">3D STORE</span>
+      </h1>
+      <p class="hero-subtitle">Your premium movie collection awaits</p>
+      <a href="#comedy" class="hero-cta" id="browse-btn">Browse Collection</a>
+    </div>
+    <div class="scroll-indicator" aria-hidden="true">
+      <span>Scroll</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </header>
+
+  <!-- ===== Main Store ===== -->
+  <main id="store" class="store">
+
+    <!-- Comedy Section -->
+    <section id="comedy" class="genre-section" data-genre="comedy" aria-label="Comedy movies">
+      <div class="section-header">
+        <h2 class="neon-text comedy-neon">🎭 Comedy</h2>
+        <div class="section-line" aria-hidden="true"></div>
+      </div>
+      <div class="movie-shelf">
+        <div class="movie-grid" id="comedy-grid" role="list" aria-label="Comedy movie collection"></div>
+        <div class="shelf-bar" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <!-- Action Section -->
+    <section id="action" class="genre-section" data-genre="action" aria-label="Action movies">
+      <div class="section-header">
+        <h2 class="neon-text action-neon">💥 Action</h2>
+        <div class="section-line" aria-hidden="true"></div>
+      </div>
+      <div class="movie-shelf">
+        <div class="movie-grid" id="action-grid" role="list" aria-label="Action movie collection"></div>
+        <div class="shelf-bar" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <!-- Science Fiction Section -->
+    <section id="scifi" class="genre-section" data-genre="scifi" aria-label="Science Fiction movies">
+      <div class="section-header">
+        <h2 class="neon-text scifi-neon">🚀 Science Fiction</h2>
+        <div class="section-line" aria-hidden="true"></div>
+      </div>
+      <div class="movie-shelf">
+        <div class="movie-grid" id="scifi-grid" role="list" aria-label="Science Fiction movie collection"></div>
+        <div class="shelf-bar" aria-hidden="true"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <p class="footer-text">
+      🎬 <span class="footer-accent">Blockbuster 3D Store</span> — Click any movie to visit its IMDB page
+    </p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="script.js"></script>
+</body>
+</html>
