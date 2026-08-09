@@ -2,77 +2,677 @@
    BLOCKBUSTER 3D VR STORE — Application Logic
    ================================================ */
 
-// ===== MOVIE DATA (60 movies, 5 genres) =====
+// ===== MOVIE DATA (60 movies, 5 genres with poster images) =====
 const movieData = {
   comedy: [
-    { title: "The Hangover", year: 2009, rating: 7.7, imdb: "https://www.imdb.com/title/tt1119646/", colors: ["#667eea", "#764ba2"] },
-    { title: "Superbad", year: 2007, rating: 7.6, imdb: "https://www.imdb.com/title/tt0829482/", colors: ["#f093fb", "#f5576c"] },
-    { title: "Bridesmaids", year: 2011, rating: 6.8, imdb: "https://www.imdb.com/title/tt1478338/", colors: ["#fa709a", "#fee140"] },
-    { title: "Step Brothers", year: 2008, rating: 6.9, imdb: "https://www.imdb.com/title/tt0838283/", colors: ["#a18cd1", "#fbc2eb"] },
-    { title: "Mean Girls", year: 2004, rating: 7.1, imdb: "https://www.imdb.com/title/tt0377092/", colors: ["#ff758c", "#ff7eb3"] },
-    { title: "Dumb & Dumber", year: 1994, rating: 7.3, imdb: "https://www.imdb.com/title/tt0109686/", colors: ["#f6d365", "#fda085"] },
-    { title: "Anchorman", year: 2004, rating: 7.2, imdb: "https://www.imdb.com/title/tt0357413/", colors: ["#ffecd2", "#fcb69f"] },
-    { title: "Napoleon Dynamite", year: 2004, rating: 6.9, imdb: "https://www.imdb.com/title/tt0374900/", colors: ["#a1c4fd", "#c2e9fb"] },
-    { title: "Grand Budapest Hotel", year: 2014, rating: 8.1, imdb: "https://www.imdb.com/title/tt2278388/", colors: ["#d4fc79", "#96e6a1"] },
-    { title: "Borat", year: 2006, rating: 7.4, imdb: "https://www.imdb.com/title/tt0443453/", colors: ["#84fab0", "#8fd3f4"] },
-    { title: "Shaun of the Dead", year: 2004, rating: 7.9, imdb: "https://www.imdb.com/title/tt0365748/", colors: ["#c471f5", "#fa71cd"] },
-    { title: "Tropic Thunder", year: 2008, rating: 7.1, imdb: "https://www.imdb.com/title/tt0942385/", colors: ["#f5576c", "#ff9966"] }
+    {
+      title: "The Hangover",
+      year: 2009,
+      rating: 7.7,
+      imdb: "https://www.imdb.com/title/tt1119646/",
+      colors: [
+        "#667eea",
+        "#764ba2"
+      ],
+      poster: "https://images.justwatch.com/poster/285598209/s332/the-hangover.jpg"
+    },
+    {
+      title: "Superbad",
+      year: 2007,
+      rating: 7.6,
+      imdb: "https://www.imdb.com/title/tt0829482/",
+      colors: [
+        "#f093fb",
+        "#f5576c"
+      ],
+      poster: "https://images.justwatch.com/poster/195865316/s332/superbad.jpg"
+    },
+    {
+      title: "Bridesmaids",
+      year: 2011,
+      rating: 6.8,
+      imdb: "https://www.imdb.com/title/tt1478338/",
+      colors: [
+        "#fa709a",
+        "#fee140"
+      ],
+      poster: "https://images.justwatch.com/poster/301539331/s332/bridesmaids.jpg"
+    },
+    {
+      title: "Step Brothers",
+      year: 2008,
+      rating: 6.9,
+      imdb: "https://www.imdb.com/title/tt0838283/",
+      colors: [
+        "#a18cd1",
+        "#fbc2eb"
+      ],
+      poster: "https://images.justwatch.com/poster/297627242/s332/step-brothers.jpg"
+    },
+    {
+      title: "Mean Girls",
+      year: 2004,
+      rating: 7.1,
+      imdb: "https://www.imdb.com/title/tt0377092/",
+      colors: [
+        "#ff758c",
+        "#ff7eb3"
+      ],
+      poster: "https://images.justwatch.com/poster/252834940/s332/mean-girls.jpg"
+    },
+    {
+      title: "Dumb & Dumber",
+      year: 1994,
+      rating: 7.3,
+      imdb: "https://www.imdb.com/title/tt0109686/",
+      colors: [
+        "#f6d365",
+        "#fda085"
+      ],
+      poster: "https://images.justwatch.com/poster/20464003/s332/dumb-and-dumber.jpg"
+    },
+    {
+      title: "Anchorman",
+      year: 2004,
+      rating: 7.2,
+      imdb: "https://www.imdb.com/title/tt0357413/",
+      colors: [
+        "#ffecd2",
+        "#fcb69f"
+      ],
+      poster: "https://images.justwatch.com/poster/180599159/s332/anchorman-the-legend-of-ron-burgundy.jpg"
+    },
+    {
+      title: "Napoleon Dynamite",
+      year: 2004,
+      rating: 6.9,
+      imdb: "https://www.imdb.com/title/tt0374900/",
+      colors: [
+        "#a1c4fd",
+        "#c2e9fb"
+      ],
+      poster: "https://images.justwatch.com/poster/11012718/s332/napoleon-dynamite.jpg"
+    },
+    {
+      title: "Grand Budapest Hotel",
+      year: 2014,
+      rating: 8.1,
+      imdb: "https://www.imdb.com/title/tt2278388/",
+      colors: [
+        "#d4fc79",
+        "#96e6a1"
+      ],
+      poster: "https://images.justwatch.com/poster/131734409/s332/the-grand-budapest-hotel.jpg"
+    },
+    {
+      title: "Borat",
+      year: 2006,
+      rating: 7.4,
+      imdb: "https://www.imdb.com/title/tt0443453/",
+      colors: [
+        "#84fab0",
+        "#8fd3f4"
+      ],
+      poster: "https://images.justwatch.com/poster/294848441/s332/borat-cultural-learnings-of-america-for-make-benefit-glorious-nation-of-kazakhstan.jpg"
+    },
+    {
+      title: "Shaun of the Dead",
+      year: 2004,
+      rating: 7.9,
+      imdb: "https://www.imdb.com/title/tt0365748/",
+      colors: [
+        "#c471f5",
+        "#fa71cd"
+      ],
+      poster: "https://images.justwatch.com/poster/90411252/s332/shaun-of-the-dead.jpg"
+    },
+    {
+      title: "Tropic Thunder",
+      year: 2008,
+      rating: 7.1,
+      imdb: "https://www.imdb.com/title/tt0942385/",
+      colors: [
+        "#f5576c",
+        "#ff9966"
+      ],
+      poster: "https://images.justwatch.com/poster/181550759/s332/tropic-thunder.jpg"
+    }
   ],
   action: [
-    { title: "Mad Max: Fury Road", year: 2015, rating: 8.1, imdb: "https://www.imdb.com/title/tt1392190/", colors: ["#f12711", "#f5af19"] },
-    { title: "John Wick", year: 2014, rating: 7.4, imdb: "https://www.imdb.com/title/tt2911666/", colors: ["#232526", "#414345"] },
-    { title: "The Dark Knight", year: 2008, rating: 9.0, imdb: "https://www.imdb.com/title/tt0468569/", colors: ["#141E30", "#243B55"] },
-    { title: "Die Hard", year: 1988, rating: 8.2, imdb: "https://www.imdb.com/title/tt0095016/", colors: ["#c31432", "#240b36"] },
-    { title: "Gladiator", year: 2000, rating: 8.5, imdb: "https://www.imdb.com/title/tt0172495/", colors: ["#3a1c71", "#d76d77"] },
-    { title: "Top Gun: Maverick", year: 2022, rating: 8.2, imdb: "https://www.imdb.com/title/tt1745960/", colors: ["#1a2a6c", "#fdbb2d"] },
-    { title: "Mission Impossible", year: 2018, rating: 7.7, imdb: "https://www.imdb.com/title/tt4912910/", colors: ["#0f0c29", "#302b63"] },
-    { title: "Kill Bill Vol.1", year: 2003, rating: 8.2, imdb: "https://www.imdb.com/title/tt0266697/", colors: ["#eb3349", "#f45c43"] },
-    { title: "The Raid", year: 2011, rating: 7.6, imdb: "https://www.imdb.com/title/tt1899353/", colors: ["#1d4350", "#a43931"] },
-    { title: "300", year: 2006, rating: 7.6, imdb: "https://www.imdb.com/title/tt0416449/", colors: ["#870000", "#190a05"] },
-    { title: "Logan", year: 2017, rating: 8.1, imdb: "https://www.imdb.com/title/tt3315342/", colors: ["#283048", "#859398"] },
-    { title: "Fury", year: 2014, rating: 7.6, imdb: "https://www.imdb.com/title/tt2713180/", colors: ["#414d0b", "#727a17"] }
+    {
+      title: "Mad Max: Fury Road",
+      year: 2015,
+      rating: 8.1,
+      imdb: "https://www.imdb.com/title/tt1392190/",
+      colors: [
+        "#f12711",
+        "#f5af19"
+      ],
+      poster: "https://images.justwatch.com/poster/8716732/s332/mad-max-fury-road.jpg"
+    },
+    {
+      title: "John Wick",
+      year: 2014,
+      rating: 7.4,
+      imdb: "https://www.imdb.com/title/tt2911666/",
+      colors: [
+        "#232526",
+        "#414345"
+      ],
+      poster: "https://images.justwatch.com/poster/61511363/s332/john-wick.jpg"
+    },
+    {
+      title: "The Dark Knight",
+      year: 2008,
+      rating: 9,
+      imdb: "https://www.imdb.com/title/tt0468569/",
+      colors: [
+        "#141E30",
+        "#243B55"
+      ],
+      poster: "https://images.justwatch.com/poster/116082563/s332/the-dark-knight.jpg"
+    },
+    {
+      title: "Die Hard",
+      year: 1988,
+      rating: 8.2,
+      imdb: "https://www.imdb.com/title/tt0095016/",
+      colors: [
+        "#c31432",
+        "#240b36"
+      ],
+      poster: "https://images.justwatch.com/poster/311306044/s332/die-hard.jpg"
+    },
+    {
+      title: "Gladiator",
+      year: 2000,
+      rating: 8.5,
+      imdb: "https://www.imdb.com/title/tt0172495/",
+      colors: [
+        "#3a1c71",
+        "#d76d77"
+      ],
+      poster: "https://images.justwatch.com/poster/344681902/s332/gladiator.jpg"
+    },
+    {
+      title: "Top Gun: Maverick",
+      year: 2022,
+      rating: 8.2,
+      imdb: "https://www.imdb.com/title/tt1745960/",
+      colors: [
+        "#1a2a6c",
+        "#fdbb2d"
+      ],
+      poster: "https://images.justwatch.com/poster/331624779/s332/top-gun-maverick.jpg"
+    },
+    {
+      title: "Mission Impossible",
+      year: 2018,
+      rating: 7.7,
+      imdb: "https://www.imdb.com/title/tt4912910/",
+      colors: [
+        "#0f0c29",
+        "#302b63"
+      ],
+      poster: "https://images.justwatch.com/poster/65973274/s332/mission-impossible.jpg"
+    },
+    {
+      title: "Kill Bill Vol.1",
+      year: 2003,
+      rating: 8.2,
+      imdb: "https://www.imdb.com/title/tt0266697/",
+      colors: [
+        "#eb3349",
+        "#f45c43"
+      ],
+      poster: "https://images.justwatch.com/poster/56448079/s332/kill-bill-vol-1.jpg"
+    },
+    {
+      title: "The Raid",
+      year: 2011,
+      rating: 7.6,
+      imdb: "https://www.imdb.com/title/tt1899353/",
+      colors: [
+        "#1d4350",
+        "#a43931"
+      ],
+      poster: "https://images.justwatch.com/poster/179878732/s332/the-raid.jpg"
+    },
+    {
+      title: "300",
+      year: 2006,
+      rating: 7.6,
+      imdb: "https://www.imdb.com/title/tt0416449/",
+      colors: [
+        "#870000",
+        "#190a05"
+      ],
+      poster: "https://images.justwatch.com/poster/182872015/s332/300.jpg"
+    },
+    {
+      title: "Logan",
+      year: 2017,
+      rating: 8.1,
+      imdb: "https://www.imdb.com/title/tt3315342/",
+      colors: [
+        "#283048",
+        "#859398"
+      ],
+      poster: "https://images.justwatch.com/poster/76832017/s332/logan.jpg"
+    },
+    {
+      title: "Fury",
+      year: 2014,
+      rating: 7.6,
+      imdb: "https://www.imdb.com/title/tt2713180/",
+      colors: [
+        "#414d0b",
+        "#727a17"
+      ],
+      poster: "https://images.justwatch.com/poster/8704796/s332/fury.jpg"
+    }
   ],
   scifi: [
-    { title: "Interstellar", year: 2014, rating: 8.7, imdb: "https://www.imdb.com/title/tt0816692/", colors: ["#0f2027", "#2c5364"] },
-    { title: "Blade Runner 2049", year: 2017, rating: 8.0, imdb: "https://www.imdb.com/title/tt1856101/", colors: ["#fc4a1a", "#f7b733"] },
-    { title: "The Matrix", year: 1999, rating: 8.7, imdb: "https://www.imdb.com/title/tt0133093/", colors: ["#000000", "#0f9b0f"] },
-    { title: "Inception", year: 2010, rating: 8.8, imdb: "https://www.imdb.com/title/tt1375666/", colors: ["#0f0c29", "#24243e"] },
-    { title: "Dune", year: 2021, rating: 8.0, imdb: "https://www.imdb.com/title/tt1160419/", colors: ["#c2935e", "#8b6f47"] },
-    { title: "Alien", year: 1979, rating: 8.5, imdb: "https://www.imdb.com/title/tt0078748/", colors: ["#0c0c1d", "#0f4c75"] },
-    { title: "Terminator 2", year: 1991, rating: 8.6, imdb: "https://www.imdb.com/title/tt0103064/", colors: ["#4b6cb7", "#182848"] },
-    { title: "Arrival", year: 2016, rating: 7.9, imdb: "https://www.imdb.com/title/tt2543164/", colors: ["#1f1c2c", "#928DAB"] },
-    { title: "Ex Machina", year: 2014, rating: 7.7, imdb: "https://www.imdb.com/title/tt0470752/", colors: ["#0a0e14", "#3a7bd5"] },
-    { title: "The Martian", year: 2015, rating: 8.0, imdb: "https://www.imdb.com/title/tt3659388/", colors: ["#c0392b", "#8e44ad"] },
-    { title: "Edge of Tomorrow", year: 2014, rating: 7.9, imdb: "https://www.imdb.com/title/tt1631867/", colors: ["#2c3e50", "#3498db"] },
-    { title: "Gravity", year: 2013, rating: 7.7, imdb: "https://www.imdb.com/title/tt1454468/", colors: ["#0c0c1d", "#344955"] }
+    {
+      title: "Interstellar",
+      year: 2014,
+      rating: 8.7,
+      imdb: "https://www.imdb.com/title/tt0816692/",
+      colors: [
+        "#0f2027",
+        "#2c5364"
+      ],
+      poster: "https://images.justwatch.com/poster/449990/s332/interstellar.jpg"
+    },
+    {
+      title: "Blade Runner 2049",
+      year: 2017,
+      rating: 8,
+      imdb: "https://www.imdb.com/title/tt1856101/",
+      colors: [
+        "#fc4a1a",
+        "#f7b733"
+      ],
+      poster: "https://images.justwatch.com/poster/24702418/s332/blade-runner-2049.jpg"
+    },
+    {
+      title: "The Matrix",
+      year: 1999,
+      rating: 8.7,
+      imdb: "https://www.imdb.com/title/tt0133093/",
+      colors: [
+        "#000000",
+        "#0f9b0f"
+      ],
+      poster: "https://images.justwatch.com/poster/126401284/s332/the-matrix.jpg"
+    },
+    {
+      title: "Inception",
+      year: 2010,
+      rating: 8.8,
+      imdb: "https://www.imdb.com/title/tt1375666/",
+      colors: [
+        "#0f0c29",
+        "#24243e"
+      ],
+      poster: "https://images.justwatch.com/poster/302449148/s332/inception.jpg"
+    },
+    {
+      title: "Dune",
+      year: 2021,
+      rating: 8,
+      imdb: "https://www.imdb.com/title/tt1160419/",
+      colors: [
+        "#c2935e",
+        "#8b6f47"
+      ],
+      poster: "https://images.justwatch.com/poster/249473713/s332/dune-2021.jpg"
+    },
+    {
+      title: "Alien",
+      year: 1979,
+      rating: 8.5,
+      imdb: "https://www.imdb.com/title/tt0078748/",
+      colors: [
+        "#0c0c1d",
+        "#0f4c75"
+      ],
+      poster: "https://images.justwatch.com/poster/8543836/s332/alien.jpg"
+    },
+    {
+      title: "Terminator 2",
+      year: 1991,
+      rating: 8.6,
+      imdb: "https://www.imdb.com/title/tt0103064/",
+      colors: [
+        "#4b6cb7",
+        "#182848"
+      ],
+      poster: "https://images.justwatch.com/poster/301019966/s332/terminator-2-judgment-day.jpg"
+    },
+    {
+      title: "Arrival",
+      year: 2016,
+      rating: 7.9,
+      imdb: "https://www.imdb.com/title/tt2543164/",
+      colors: [
+        "#1f1c2c",
+        "#928DAB"
+      ],
+      poster: "https://images.justwatch.com/poster/8709099/s332/arrival.jpg"
+    },
+    {
+      title: "Ex Machina",
+      year: 2014,
+      rating: 7.7,
+      imdb: "https://www.imdb.com/title/tt0470752/",
+      colors: [
+        "#0a0e14",
+        "#3a7bd5"
+      ],
+      poster: "https://images.justwatch.com/poster/183412567/s332/ex-machina.jpg"
+    },
+    {
+      title: "The Martian",
+      year: 2015,
+      rating: 8,
+      imdb: "https://www.imdb.com/title/tt3659388/",
+      colors: [
+        "#c0392b",
+        "#8e44ad"
+      ],
+      poster: "https://images.justwatch.com/poster/344669530/s332/the-martian.jpg"
+    },
+    {
+      title: "Edge of Tomorrow",
+      year: 2014,
+      rating: 7.9,
+      imdb: "https://www.imdb.com/title/tt1631867/",
+      colors: [
+        "#2c3e50",
+        "#3498db"
+      ],
+      poster: "https://images.justwatch.com/poster/302993962/s332/edge-of-tomorrow.jpg"
+    },
+    {
+      title: "Gravity",
+      year: 2013,
+      rating: 7.7,
+      imdb: "https://www.imdb.com/title/tt1454468/",
+      colors: [
+        "#0c0c1d",
+        "#344955"
+      ],
+      poster: "https://images.justwatch.com/poster/241479855/s332/gravity.jpg"
+    }
   ],
   drama: [
-    { title: "Shawshank Redemption", year: 1994, rating: 9.3, imdb: "https://www.imdb.com/title/tt0111161/", colors: ["#2c3e50", "#4a6274"] },
-    { title: "Forrest Gump", year: 1994, rating: 8.8, imdb: "https://www.imdb.com/title/tt0109830/", colors: ["#3E5151", "#DECBA4"] },
-    { title: "Fight Club", year: 1999, rating: 8.8, imdb: "https://www.imdb.com/title/tt0137523/", colors: ["#200122", "#6f0000"] },
-    { title: "The Godfather", year: 1972, rating: 9.2, imdb: "https://www.imdb.com/title/tt0068646/", colors: ["#0f0c0c", "#302b2b"] },
-    { title: "Pulp Fiction", year: 1994, rating: 8.9, imdb: "https://www.imdb.com/title/tt0110912/", colors: ["#eecda3", "#ef629f"] },
-    { title: "Schindler's List", year: 1993, rating: 9.0, imdb: "https://www.imdb.com/title/tt0108052/", colors: ["#141517", "#2c3e50"] },
-    { title: "Whiplash", year: 2014, rating: 8.5, imdb: "https://www.imdb.com/title/tt2582802/", colors: ["#eb5757", "#000000"] },
-    { title: "Parasite", year: 2019, rating: 8.5, imdb: "https://www.imdb.com/title/tt6751668/", colors: ["#0a504a", "#38ef7d"] },
-    { title: "The Prestige", year: 2006, rating: 8.5, imdb: "https://www.imdb.com/title/tt0482571/", colors: ["#355c7d", "#6c5b7b"] },
-    { title: "Good Will Hunting", year: 1997, rating: 8.3, imdb: "https://www.imdb.com/title/tt0119217/", colors: ["#4568dc", "#b06ab3"] },
-    { title: "A Beautiful Mind", year: 2001, rating: 8.2, imdb: "https://www.imdb.com/title/tt0268978/", colors: ["#0f2027", "#203a43"] },
-    { title: "The Green Mile", year: 1999, rating: 8.6, imdb: "https://www.imdb.com/title/tt0120689/", colors: ["#2c3e50", "#4ca1af"] }
+    {
+      title: "Shawshank Redemption",
+      year: 1994,
+      rating: 9.3,
+      imdb: "https://www.imdb.com/title/tt0111161/",
+      colors: [
+        "#2c3e50",
+        "#4a6274"
+      ],
+      poster: "https://images.justwatch.com/poster/309786652/s332/the-shawshank-redemption.jpg"
+    },
+    {
+      title: "Forrest Gump",
+      year: 1994,
+      rating: 8.8,
+      imdb: "https://www.imdb.com/title/tt0109830/",
+      colors: [
+        "#3E5151",
+        "#DECBA4"
+      ],
+      poster: "https://images.justwatch.com/poster/109577912/s332/forrest-gump.jpg"
+    },
+    {
+      title: "Fight Club",
+      year: 1999,
+      rating: 8.8,
+      imdb: "https://www.imdb.com/title/tt0137523/",
+      colors: [
+        "#200122",
+        "#6f0000"
+      ],
+      poster: "https://images.justwatch.com/poster/210852313/s332/fight-club.jpg"
+    },
+    {
+      title: "The Godfather",
+      year: 1972,
+      rating: 9.2,
+      imdb: "https://www.imdb.com/title/tt0068646/",
+      colors: [
+        "#0f0c0c",
+        "#302b2b"
+      ],
+      poster: "https://images.justwatch.com/poster/202440770/s332/the-godfather.jpg"
+    },
+    {
+      title: "Pulp Fiction",
+      year: 1994,
+      rating: 8.9,
+      imdb: "https://www.imdb.com/title/tt0110912/",
+      colors: [
+        "#eecda3",
+        "#ef629f"
+      ],
+      poster: "https://images.justwatch.com/poster/301999989/s332/pulp-fiction.jpg"
+    },
+    {
+      title: "Schindler's List",
+      year: 1993,
+      rating: 9,
+      imdb: "https://www.imdb.com/title/tt0108052/",
+      colors: [
+        "#141517",
+        "#2c3e50"
+      ],
+      poster: "https://images.justwatch.com/poster/169344232/s332/schindlers-list.jpg"
+    },
+    {
+      title: "Whiplash",
+      year: 2014,
+      rating: 8.5,
+      imdb: "https://www.imdb.com/title/tt2582802/",
+      colors: [
+        "#eb5757",
+        "#000000"
+      ],
+      poster: "https://images.justwatch.com/poster/268498981/s332/whiplash.jpg"
+    },
+    {
+      title: "Parasite",
+      year: 2019,
+      rating: 8.5,
+      imdb: "https://www.imdb.com/title/tt6751668/",
+      colors: [
+        "#0a504a",
+        "#38ef7d"
+      ],
+      poster: "https://images.justwatch.com/poster/130011621/s332/parasite.jpg"
+    },
+    {
+      title: "The Prestige",
+      year: 2006,
+      rating: 8.5,
+      imdb: "https://www.imdb.com/title/tt0482571/",
+      colors: [
+        "#355c7d",
+        "#6c5b7b"
+      ],
+      poster: "https://images.justwatch.com/poster/55085098/s332/the-prestige.jpg"
+    },
+    {
+      title: "Good Will Hunting",
+      year: 1997,
+      rating: 8.3,
+      imdb: "https://www.imdb.com/title/tt0119217/",
+      colors: [
+        "#4568dc",
+        "#b06ab3"
+      ],
+      poster: "https://images.justwatch.com/poster/214706751/s332/good-will-hunting.jpg"
+    },
+    {
+      title: "A Beautiful Mind",
+      year: 2001,
+      rating: 8.2,
+      imdb: "https://www.imdb.com/title/tt0268978/",
+      colors: [
+        "#0f2027",
+        "#203a43"
+      ],
+      poster: "https://images.justwatch.com/poster/208348730/s332/a-beautiful-mind.jpg"
+    },
+    {
+      title: "The Green Mile",
+      year: 1999,
+      rating: 8.6,
+      imdb: "https://www.imdb.com/title/tt0120689/",
+      colors: [
+        "#2c3e50",
+        "#4ca1af"
+      ],
+      poster: "https://images.justwatch.com/poster/102622497/s332/the-green-mile.jpg"
+    }
   ],
   family: [
-    { title: "Toy Story", year: 1995, rating: 8.3, imdb: "https://www.imdb.com/title/tt0114709/", colors: ["#00b4db", "#0083b0"] },
-    { title: "Finding Nemo", year: 2003, rating: 8.2, imdb: "https://www.imdb.com/title/tt0266543/", colors: ["#56ab2f", "#a8e063"] },
-    { title: "The Incredibles", year: 2004, rating: 8.0, imdb: "https://www.imdb.com/title/tt0317705/", colors: ["#ff416c", "#ff4b2b"] },
-    { title: "Up", year: 2009, rating: 8.3, imdb: "https://www.imdb.com/title/tt1049413/", colors: ["#11998e", "#38ef7d"] },
-    { title: "Shrek", year: 2001, rating: 7.9, imdb: "https://www.imdb.com/title/tt0126029/", colors: ["#a8ff78", "#78ffd6"] },
-    { title: "Frozen", year: 2013, rating: 7.4, imdb: "https://www.imdb.com/title/tt2294629/", colors: ["#2193b0", "#6dd5ed"] },
-    { title: "The Lion King", year: 1994, rating: 8.5, imdb: "https://www.imdb.com/title/tt0110357/", colors: ["#f7971e", "#ffd200"] },
-    { title: "Coco", year: 2017, rating: 8.4, imdb: "https://www.imdb.com/title/tt2380307/", colors: ["#e44d26", "#f16529"] },
-    { title: "Moana", year: 2016, rating: 7.6, imdb: "https://www.imdb.com/title/tt3521164/", colors: ["#667db6", "#0082c8"] },
-    { title: "Ratatouille", year: 2007, rating: 8.1, imdb: "https://www.imdb.com/title/tt0382932/", colors: ["#f953c6", "#b91d73"] },
-    { title: "WALL-E", year: 2008, rating: 8.4, imdb: "https://www.imdb.com/title/tt0910970/", colors: ["#1488cc", "#2b32b2"] },
-    { title: "Monsters Inc", year: 2001, rating: 8.1, imdb: "https://www.imdb.com/title/tt0198781/", colors: ["#43cea2", "#185a9d"] }
+    {
+      title: "Toy Story",
+      year: 1995,
+      rating: 8.3,
+      imdb: "https://www.imdb.com/title/tt0114709/",
+      colors: [
+        "#00b4db",
+        "#0083b0"
+      ],
+      poster: "https://images.justwatch.com/poster/76796933/s332/toy-story.jpg"
+    },
+    {
+      title: "Finding Nemo",
+      year: 2003,
+      rating: 8.2,
+      imdb: "https://www.imdb.com/title/tt0266543/",
+      colors: [
+        "#56ab2f",
+        "#a8e063"
+      ],
+      poster: "https://images.justwatch.com/poster/29014421/s332/finding-nemo.jpg"
+    },
+    {
+      title: "The Incredibles",
+      year: 2004,
+      rating: 8,
+      imdb: "https://www.imdb.com/title/tt0317705/",
+      colors: [
+        "#ff416c",
+        "#ff4b2b"
+      ],
+      poster: "https://images.justwatch.com/poster/67664646/s332/the-incredibles.jpg"
+    },
+    {
+      title: "Up",
+      year: 2009,
+      rating: 8.3,
+      imdb: "https://www.imdb.com/title/tt1049413/",
+      colors: [
+        "#11998e",
+        "#38ef7d"
+      ],
+      poster: "https://images.justwatch.com/poster/302310503/s332/up.jpg"
+    },
+    {
+      title: "Shrek",
+      year: 2001,
+      rating: 7.9,
+      imdb: "https://www.imdb.com/title/tt0126029/",
+      colors: [
+        "#a8ff78",
+        "#78ffd6"
+      ],
+      poster: "https://images.justwatch.com/poster/65667949/s332/shrek.jpg"
+    },
+    {
+      title: "Frozen",
+      year: 2013,
+      rating: 7.4,
+      imdb: "https://www.imdb.com/title/tt2294629/",
+      colors: [
+        "#2193b0",
+        "#6dd5ed"
+      ],
+      poster: "https://images.justwatch.com/poster/285416360/s332/frozen.jpg"
+    },
+    {
+      title: "The Lion King",
+      year: 1994,
+      rating: 8.5,
+      imdb: "https://www.imdb.com/title/tt0110357/",
+      colors: [
+        "#f7971e",
+        "#ffd200"
+      ],
+      poster: "https://images.justwatch.com/poster/344629567/s332/the-lion-king.jpg"
+    },
+    {
+      title: "Coco",
+      year: 2017,
+      rating: 8.4,
+      imdb: "https://www.imdb.com/title/tt2380307/",
+      colors: [
+        "#e44d26",
+        "#f16529"
+      ],
+      poster: "https://images.justwatch.com/poster/35315559/s332/coco.jpg"
+    },
+    {
+      title: "Moana",
+      year: 2016,
+      rating: 7.6,
+      imdb: "https://www.imdb.com/title/tt3521164/",
+      colors: [
+        "#667db6",
+        "#0082c8"
+      ],
+      poster: "https://images.justwatch.com/poster/343683458/s332/moana-2025.jpg"
+    },
+    {
+      title: "Ratatouille",
+      year: 2007,
+      rating: 8.1,
+      imdb: "https://www.imdb.com/title/tt0382932/",
+      colors: [
+        "#f953c6",
+        "#b91d73"
+      ],
+      poster: "https://images.justwatch.com/poster/151544381/s332/ratatouille.jpg"
+    },
+    {
+      title: "WALL-E",
+      year: 2008,
+      rating: 8.4,
+      imdb: "https://www.imdb.com/title/tt0910970/",
+      colors: [
+        "#1488cc",
+        "#2b32b2"
+      ],
+      poster: "https://images.justwatch.com/poster/222296424/s332/wall-e.jpg"
+    },
+    {
+      title: "Monsters Inc",
+      year: 2001,
+      rating: 8.1,
+      imdb: "https://www.imdb.com/title/tt0198781/",
+      colors: [
+        "#43cea2",
+        "#185a9d"
+      ],
+      poster: "https://images.justwatch.com/poster/200836345/s332/monsters-inc.jpg"
+    }
   ]
 };
 
@@ -471,14 +1071,10 @@ function createMoviePoster(scene, movie, x, y, z, rotY, w, h) {
 
   const entity = document.createElement('a-entity');
   entity.setAttribute('geometry', `primitive: plane; width: ${w}; height: ${h}`);
-  entity.setAttribute('material', 'shader: flat; side: double; color: #222');
+  entity.setAttribute('material', `src: ${movie.poster}; shader: flat; side: double; roughness: 0.95`);
   entity.setAttribute('position', `${x} ${y} ${z}`);
   entity.setAttribute('rotation', `0 ${rotY} 0`);
   entity.classList.add('clickable');
-
-  // Generate poster texture
-  const canvas = generatePosterTexture(movie);
-  pendingPosters.push({ entity, canvas });
 
   // Click → IMDB
   entity.addEventListener('click', () => {
