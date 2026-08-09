@@ -1186,17 +1186,17 @@ AFRAME.registerComponent('boundary-check', {
 
 AFRAME.registerComponent('step-movement', {
   schema: {
-    stepSize: { type: 'number', default: 0.55 },
-    threshold: { type: 'number', default: 12 },
-    cooldown: { type: 'number', default: 320 },
+    stepSize: { type: 'number', default: 0.6 },
+    threshold: { type: 'number', default: 2.0 },     // m/s² — pure acceleration spike to count as step
+    cooldown: { type: 'number', default: 350 },       // min ms between steps
     enabled: { type: 'boolean', default: false }
   },
 
   init: function () {
     this.lastStepTime = 0;
-    this.lastAccelY = 0;
     this.rising = false;
     this.motionEnabled = false;
+    this.smoothedMag = 0;
 
     // Joystick state
     this.joystickActive = false;
@@ -1212,6 +1212,7 @@ AFRAME.registerComponent('step-movement', {
     this.motionEnabled = true;
     this.data.enabled = true;
     window.addEventListener('devicemotion', this._onDeviceMotion, true);
+    console.log('[StepMovement] Walking detection ENABLED');
   },
 
   disableMotion: function () {
@@ -1223,22 +1224,39 @@ AFRAME.registerComponent('step-movement', {
   _onDeviceMotion: function (event) {
     if (!this.data.enabled) return;
 
-    var acc = event.accelerationIncludingGravity;
+    // Prefer acceleration (gravity removed) — gives clean motion data
+    // Fall back to accelerationIncludingGravity if not available
+    var useRaw = !event.acceleration || (event.acceleration.x === null);
+    var acc = useRaw ? event.accelerationIncludingGravity : event.acceleration;
     if (!acc) return;
 
-    var accelY = acc.y || 0;
+    var x = acc.x || 0;
+    var y = acc.y || 0;
+    var z = acc.z || 0;
+
+    // Compute total acceleration magnitude (works regardless of phone orientation)
+    var magnitude = Math.sqrt(x * x + y * y + z * z);
+
+    // If using accelerationIncludingGravity, subtract gravity baseline (~9.81)
+    if (useRaw) {
+      magnitude = Math.abs(magnitude - 9.81);
+    }
+
+    // Low-pass smoothing to filter sensor noise
+    this.smoothedMag = this.smoothedMag * 0.6 + magnitude * 0.4;
+
     var now = Date.now();
 
-    // Simple peak detector: detect when acceleration crosses threshold going up
-    if (!this.rising && accelY > this.data.threshold) {
+    // Peak detection: rising edge when magnitude exceeds threshold
+    if (!this.rising && this.smoothedMag > this.data.threshold) {
       this.rising = true;
     }
 
-    // When it comes back down past a lower threshold, count as one step
-    if (this.rising && accelY < this.data.threshold * 0.5) {
+    // Falling edge: magnitude drops below 40% of threshold = one step complete
+    if (this.rising && this.smoothedMag < this.data.threshold * 0.4) {
       this.rising = false;
 
-      // Apply cooldown
+      // Apply cooldown to prevent double-counting
       if (now - this.lastStepTime > this.data.cooldown) {
         this.lastStepTime = now;
         this._moveForward(this.data.stepSize);
@@ -1254,7 +1272,7 @@ AFRAME.registerComponent('step-movement', {
     // Get the camera's world-space forward direction
     var direction = new THREE.Vector3(0, 0, -1);
     camera.object3D.getWorldDirection(direction);
-    direction.y = 0;
+    direction.y = 0; // Keep movement horizontal
     direction.normalize();
 
     var pos = rig.getAttribute('position');
