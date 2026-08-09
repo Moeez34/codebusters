@@ -304,9 +304,9 @@ function buildStore() {
   const scene = document.querySelector('a-scene');
 
   // 1. DVD wall textures - much higher density to look packed
-  applyCanvasTexture('back-wall-dvds', generateDVDWallTexture(8, 75));
-  applyCanvasTexture('left-wall-dvds', generateDVDWallTexture(8, 48));
-  applyCanvasTexture('right-wall-dvds', generateDVDWallTexture(8, 48));
+  applyCanvasTexture('back-wall-dvds', generateDVDWallTexture(8, 90));
+  applyCanvasTexture('left-wall-dvds', generateDVDWallTexture(8, 60));
+  applyCanvasTexture('right-wall-dvds', generateDVDWallTexture(8, 60));
 
   // 2. Back wall genre signs
   const backSigns = [
@@ -334,9 +334,10 @@ function buildStore() {
   ];
   aisles.forEach(a => createAisle(scene, a.genre, a.x, a.label));
 
-  // 6. Wall movies — Drama on left, Family on right
+  // 6. Wall movies — Drama on left, Family on right, and a mix on the back wall
   createWallMovies(scene, 'drama', 'left');
   createWallMovies(scene, 'family', 'right');
+  createBackWallMovies(scene);
 
   // 7. Apply all poster textures after entities initialize
   setTimeout(applyPendingTextures, 400);
@@ -379,25 +380,25 @@ function createAisle(scene, genre, x, label) {
   // Genre sign above aisle
   createSign(scene, label, `${x} 2.85 ${aisleZ}`, '0 0 0');
 
-  // Movies on left side (facing -x, rotation 0 -90 0) - Densely packed: 4 rows of 8 columns = 32 movies!
+  // Movies on left side (facing -x, rotation 0 -90 0) - Densely packed: 4 rows of 12 columns = 48 movies!
   for (let r = 0; r < 4; r++) {
-    for (let c = 0; c < 8; c++) {
-      const index = (r * 8 + c) % movies.length;
+    for (let c = 0; c < 12; c++) {
+      const index = (r * 12 + c) % movies.length;
       const movie = movies[index];
-      const pz = aisleZ - aisleLen / 2 + 0.8 + c * 0.98;
+      const pz = aisleZ - aisleLen / 2 + 0.6 + c * 0.64;
       const py = 0.38 + r * 0.55;
-      createMoviePoster(scene, movie, x - 0.12, py, pz, -90, 0.45, 0.52);
+      createMoviePoster(scene, movie, x - 0.12, py, pz, -90, 0.48, 0.52);
     }
   }
 
-  // Movies on right side (facing +x, rotation 0 90 0) - Densely packed: 4 rows of 8 columns = 32 movies!
+  // Movies on right side (facing +x, rotation 0 90 0) - Densely packed: 4 rows of 12 columns = 48 movies!
   for (let r = 0; r < 4; r++) {
-    for (let c = 0; c < 8; c++) {
-      const index = (r * 8 + c) % movies.length;
+    for (let c = 0; c < 12; c++) {
+      const index = (r * 12 + c) % movies.length;
       const movie = movies[index];
-      const pz = aisleZ - aisleLen / 2 + 0.8 + c * 0.98;
+      const pz = aisleZ - aisleLen / 2 + 0.6 + c * 0.64;
       const py = 0.38 + r * 0.55;
-      createMoviePoster(scene, movie, x + 0.12, py, pz, 90, 0.45, 0.52);
+      createMoviePoster(scene, movie, x + 0.12, py, pz, 90, 0.48, 0.52);
     }
   }
 
@@ -418,19 +419,48 @@ function createWallMovies(scene, genre, wall) {
     bar.setAttribute('position', `${isLeft ? -14.88 : 14.88} ${0.12 + r * 0.85} -0.5`);
     bar.setAttribute('width', '0.08');
     bar.setAttribute('height', '0.04');
-    bar.setAttribute('depth', '16.5');
+    bar.setAttribute('depth', '18.5');
     bar.setAttribute('material', 'color: #3a2515; roughness: 0.9; shader: standard');
     scene.appendChild(bar);
   }
 
-  // Place 3 rows of 12 columns = 36 movies on each wall!
+  // Place 3 rows of 26 columns = 78 movies on each side wall!
   for (let r = 0; r < 3; r++) {
-    for (let c = 0; c < 12; c++) {
-      const index = (r * 12 + c) % movies.length;
+    for (let c = 0; c < 26; c++) {
+      const index = (r * 26 + c) % movies.length;
       const movie = movies[index];
-      const z = -8.2 + c * 1.4;
+      const z = -8.2 + c * 0.63;
       const y = 0.55 + r * 0.85;
-      createMoviePoster(scene, movie, x, y, z, rotY, 0.52, 0.72);
+      createMoviePoster(scene, movie, x, y, z, rotY, 0.55, 0.72);
+    }
+  }
+}
+
+function createBackWallMovies(scene) {
+  // Combine movies from different genres to fill the back wall
+  const allMovies = [...movieData.action, ...movieData.scifi, ...movieData.comedy];
+  const z = -9.82;
+  const rotY = 0;
+
+  // Create back wall shelf bars for visual support
+  for (let r = 0; r < 3; r++) {
+    const bar = document.createElement('a-box');
+    bar.setAttribute('position', `0 ${0.12 + r * 0.85} -9.88`);
+    bar.setAttribute('width', '28.5');
+    bar.setAttribute('height', '0.04');
+    bar.setAttribute('depth', '0.08');
+    bar.setAttribute('material', 'color: #3a2515; roughness: 0.9; shader: standard');
+    scene.appendChild(bar);
+  }
+
+  // Place 3 rows of 42 columns = 126 movies on the back wall!
+  for (let r = 0; r < 3; r++) {
+    for (let c = 0; c < 42; c++) {
+      const index = (r * 42 + c) % allMovies.length;
+      const movie = allMovies[index];
+      const x = -13.0 + c * 0.63;
+      const y = 0.55 + r * 0.85;
+      createMoviePoster(scene, movie, x, y, z, rotY, 0.55, 0.72);
     }
   }
 }
