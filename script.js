@@ -983,7 +983,7 @@ function createAisle(scene, genre, x, label) {
   // Movies on left side (facing -x, rotation 0 -90 0) - Densely packed: 4 rows of 12 columns = 48 movies!
   for (let r = 0; r < 4; r++) {
     for (let c = 0; c < 12; c++) {
-      const index = (r * 12 + c) % movies.length;
+      const index = (c + r * 5) % movies.length;
       const movie = movies[index];
       const pz = aisleZ - aisleLen / 2 + 0.6 + c * 0.64;
       const py = 0.38 + r * 0.55;
@@ -994,7 +994,7 @@ function createAisle(scene, genre, x, label) {
   // Movies on right side (facing +x, rotation 0 90 0) - Densely packed: 4 rows of 12 columns = 48 movies!
   for (let r = 0; r < 4; r++) {
     for (let c = 0; c < 12; c++) {
-      const index = (r * 12 + c) % movies.length;
+      const index = (c + r * 5) % movies.length;
       const movie = movies[index];
       const pz = aisleZ - aisleLen / 2 + 0.6 + c * 0.64;
       const py = 0.38 + r * 0.55;
@@ -1027,7 +1027,7 @@ function createWallMovies(scene, genre, wall) {
   // Place 3 rows of 26 columns = 78 movies on each side wall!
   for (let r = 0; r < 3; r++) {
     for (let c = 0; c < 26; c++) {
-      const index = (r * 26 + c) % movies.length;
+      const index = (c + r * 5) % movies.length;
       const movie = movies[index];
       const z = -8.2 + c * 0.63;
       const y = 0.55 + r * 0.85;
@@ -1056,7 +1056,7 @@ function createBackWallMovies(scene) {
   // Place 3 rows of 42 columns = 126 movies on the back wall!
   for (let r = 0; r < 3; r++) {
     for (let c = 0; c < 42; c++) {
-      const index = (r * 42 + c) % allMovies.length;
+      const index = (c + r * 11) % allMovies.length;
       const movie = allMovies[index];
       const x = -13.0 + c * 0.63;
       const y = 0.55 + r * 0.85;
