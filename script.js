@@ -1069,9 +1069,12 @@ function createMoviePoster(scene, movie, x, y, z, rotY, w, h) {
   w = w || 0.55;
   h = h || 0.78;
 
+  // Use a reliable, fast, open-source CORS image proxy that works on Vercel
+  const proxiedPoster = `https://images.weserv.nl/?url=${encodeURIComponent(movie.poster)}`;
+
   const entity = document.createElement('a-entity');
   entity.setAttribute('geometry', `primitive: plane; width: ${w}; height: ${h}`);
-  entity.setAttribute('material', `src: ${movie.poster}; shader: flat; side: double; roughness: 0.95`);
+  entity.setAttribute('material', `src: ${proxiedPoster}; shader: flat; side: double; roughness: 0.95`);
   entity.setAttribute('position', `${x} ${y} ${z}`);
   entity.setAttribute('rotation', `0 ${rotY} 0`);
   entity.classList.add('clickable');
