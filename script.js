@@ -1205,6 +1205,281 @@ AFRAME.registerComponent('boundary-check', {
   }
 });
 
+// ===== MOBILE: STEP DETECTION COMPONENT =====
+
+AFRAME.registerComponent('step-movement', {
+  schema: {
+    stepSize: { type: 'number', default: 0.55 },       // meters per step
+    threshold: { type: 'number', default: 12 },         // acceleration threshold to detect a step
+    cooldown: { type: 'number', default: 320 },          // minimum ms between steps
+    enabled: { type: 'boolean', default: false }
+  },
+
+  init: function () {
+    this.lastStepTime = 0;
+    this.lastAccelY = 0;
+    this.rising = false;
+    this.motionEnabled = false;
+
+    // Joystick state
+    this.joystickActive = false;
+    this.joystickX = 0;
+    this.joystickY = 0;
+
+    // Bind the handler
+    this._onDeviceMotion = this._onDeviceMotion.bind(this);
+  },
+
+  enableMotion: function () {
+    if (this.motionEnabled) return;
+    this.motionEnabled = true;
+    this.data.enabled = true;
+    window.addEventListener('devicemotion', this._onDeviceMotion, true);
+  },
+
+  disableMotion: function () {
+    this.motionEnabled = false;
+    this.data.enabled = false;
+    window.removeEventListener('devicemotion', this._onDeviceMotion, true);
+  },
+
+  _onDeviceMotion: function (event) {
+    if (!this.data.enabled) return;
+
+    var acc = event.accelerationIncludingGravity;
+    if (!acc) return;
+
+    var accelY = acc.y || 0;
+    var now = Date.now();
+
+    // Simple peak detector: detect when acceleration crosses threshold going up
+    if (!this.rising && accelY > this.data.threshold) {
+      this.rising = true;
+    }
+
+    // When it comes back down past a lower threshold, count as one step
+    if (this.rising && accelY < this.data.threshold * 0.5) {
+      this.rising = false;
+
+      // Apply cooldown
+      if (now - this.lastStepTime > this.data.cooldown) {
+        this.lastStepTime = now;
+        this._moveForward(this.data.stepSize);
+      }
+    }
+  },
+
+  _moveForward: function (distance) {
+    var rig = this.el;
+    var camera = document.getElementById('camera');
+    if (!camera) return;
+
+    // Get the camera's world-space forward direction
+    var direction = new THREE.Vector3(0, 0, -1);
+    camera.object3D.getWorldDirection(direction);
+    direction.y = 0; // Keep movement horizontal
+    direction.normalize();
+
+    var pos = rig.getAttribute('position');
+    pos.x += direction.x * distance;
+    pos.z += direction.z * distance;
+    rig.setAttribute('position', pos);
+  },
+
+  tick: function (time, delta) {
+    // Handle joystick input every frame
+    if (!this.joystickActive) return;
+    if (!delta) return;
+
+    var speed = 4.0; // meters per second
+    var dt = delta / 1000;
+
+    var camera = document.getElementById('camera');
+    if (!camera) return;
+
+    // Get camera forward and right vectors (horizontal only)
+    var forward = new THREE.Vector3(0, 0, -1);
+    camera.object3D.getWorldDirection(forward);
+    forward.y = 0;
+    forward.normalize();
+
+    var right = new THREE.Vector3();
+    right.crossVectors(forward, new THREE.Vector3(0, 1, 0)).normalize();
+
+    // joystickX: left/right, joystickY: forward/back (inverted: -Y = forward)
+    var moveX = this.joystickX * speed * dt;
+    var moveZ = -this.joystickY * speed * dt; // negative Y = push forward
+
+    var pos = this.el.getAttribute('position');
+    pos.x += forward.x * moveZ + right.x * moveX;
+    pos.z += forward.z * moveZ + right.z * moveX;
+    this.el.setAttribute('position', pos);
+  },
+
+  remove: function () {
+    this.disableMotion();
+  }
+});
+
+// ===== MOBILE: VIRTUAL JOYSTICK CONTROLLER =====
+
+function initVirtualJoystick() {
+  var joystickEl = document.getElementById('mobile-joystick');
+  var baseEl = document.getElementById('joystick-base');
+  var thumbEl = document.getElementById('joystick-thumb');
+  if (!joystickEl || !baseEl || !thumbEl) return;
+
+  var baseRect;
+  var baseCenterX, baseCenterY;
+  var maxRadius = 38; // max thumb travel from center
+  var activeTouchId = null;
+
+  function updateBaseRect() {
+    baseRect = baseEl.getBoundingClientRect();
+    baseCenterX = baseRect.left + baseRect.width / 2;
+    baseCenterY = baseRect.top + baseRect.height / 2;
+  }
+
+  function getStepComponent() {
+    var rig = document.getElementById('rig');
+    if (!rig) return null;
+    return rig.components['step-movement'];
+  }
+
+  function resetThumb() {
+    thumbEl.style.transform = 'translate(0px, 0px)';
+    thumbEl.classList.remove('active');
+    var comp = getStepComponent();
+    if (comp) {
+      comp.joystickActive = false;
+      comp.joystickX = 0;
+      comp.joystickY = 0;
+    }
+  }
+
+  baseEl.addEventListener('touchstart', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    updateBaseRect();
+    var touch = e.changedTouches[0];
+    activeTouchId = touch.identifier;
+    thumbEl.classList.add('active');
+    handleMove(touch.clientX, touch.clientY);
+  }, { passive: false });
+
+  document.addEventListener('touchmove', function (e) {
+    if (activeTouchId === null) return;
+    for (var i = 0; i < e.changedTouches.length; i++) {
+      if (e.changedTouches[i].identifier === activeTouchId) {
+        e.preventDefault();
+        handleMove(e.changedTouches[i].clientX, e.changedTouches[i].clientY);
+        break;
+      }
+    }
+  }, { passive: false });
+
+  document.addEventListener('touchend', function (e) {
+    if (activeTouchId === null) return;
+    for (var i = 0; i < e.changedTouches.length; i++) {
+      if (e.changedTouches[i].identifier === activeTouchId) {
+        activeTouchId = null;
+        resetThumb();
+        break;
+      }
+    }
+  });
+
+  document.addEventListener('touchcancel', function () {
+    activeTouchId = null;
+    resetThumb();
+  });
+
+  function handleMove(clientX, clientY) {
+    var dx = clientX - baseCenterX;
+    var dy = clientY - baseCenterY;
+    var dist = Math.sqrt(dx * dx + dy * dy);
+
+    // Clamp to max radius
+    if (dist > maxRadius) {
+      dx = (dx / dist) * maxRadius;
+      dy = (dy / dist) * maxRadius;
+      dist = maxRadius;
+    }
+
+    // Move thumb visually
+    thumbEl.style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
+
+    // Normalize to -1..1
+    var normX = dx / maxRadius;
+    var normY = dy / maxRadius;
+
+    var comp = getStepComponent();
+    if (comp) {
+      comp.joystickActive = true;
+      comp.joystickX = normX;
+      comp.joystickY = normY;
+    }
+  }
+}
+
+// ===== MOBILE DETECTION & MOTION PERMISSION =====
+
+function isMobileDevice() {
+  return /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+    ('ontouchstart' in window && window.innerWidth <= 1024);
+}
+
+function initMobileControls() {
+  if (!isMobileDevice()) return;
+
+  // Show the joystick
+  var joystickEl = document.getElementById('mobile-joystick');
+  if (joystickEl) joystickEl.classList.remove('hidden');
+
+  // Show the motion permission button
+  var motionBtn = document.getElementById('motion-permission-btn');
+  if (motionBtn) motionBtn.classList.remove('hidden');
+
+  // Init joystick touch handling
+  initVirtualJoystick();
+
+  // Handle motion permission (required on iOS 13+)
+  motionBtn.addEventListener('click', function () {
+    if (typeof DeviceMotionEvent !== 'undefined' &&
+        typeof DeviceMotionEvent.requestPermission === 'function') {
+      // iOS 13+ requires explicit permission
+      DeviceMotionEvent.requestPermission()
+        .then(function (state) {
+          if (state === 'granted') {
+            enableStepDetection(motionBtn);
+          } else {
+            alert('Motion permission denied. You can still use the joystick to move.');
+          }
+        })
+        .catch(function (err) {
+          console.error('DeviceMotion permission error:', err);
+          alert('Could not request motion permission. You can still use the joystick.');
+        });
+    } else if ('DeviceMotionEvent' in window) {
+      // Android / older iOS — no permission needed
+      enableStepDetection(motionBtn);
+    } else {
+      alert('Your device does not support motion sensors. Use the joystick to move.');
+    }
+  });
+}
+
+function enableStepDetection(btn) {
+  var rig = document.getElementById('rig');
+  if (!rig) return;
+  var comp = rig.components['step-movement'];
+  if (comp) {
+    comp.enableMotion();
+    btn.textContent = '🚶 Walking Active';
+    btn.classList.add('active');
+  }
+}
+
 // ===== INIT =====
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1220,4 +1495,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   initPointerLock();
+  initMobileControls();
 });
+

@@ -31,15 +31,22 @@
       <h1 id="dialog-title">Welcome to Blockbuster!</h1>
       <p class="subtitle">Virtual Reality Walkthrough</p>
       
-      <div class="controls-info">
+      <div class="controls-info desktop-controls">
         <div><strong>⌨️ Move:</strong> <span>W / A / S / D keys (or Arrow keys)</span></div>
         <div><strong>🖱️ Look Around:</strong> <span>Move your mouse / drag screen</span></div>
         <div><strong>🔴 Click Movie:</strong> <span>Opens its IMDB page in a new tab</span></div>
         <div><strong>🌐 VR Mode:</strong> <span>Click the VR glasses icon at bottom-right</span></div>
       </div>
 
+      <div class="controls-info mobile-controls">
+        <div><strong>🚶 Walk:</strong> <span>Walk with your phone to move in VR</span></div>
+        <div><strong>🕹️ Joystick:</strong> <span>Use the on-screen joystick to move</span></div>
+        <div><strong>📱 Look Around:</strong> <span>Move your phone to look around</span></div>
+        <div><strong>👆 Tap Movie:</strong> <span>Opens its IMDB page in a new tab</span></div>
+      </div>
+
       <button class="click-prompt" style="background: none; border: none; font-size: inherit; font-family: inherit; cursor: pointer;">
-        CLICK ANYWHERE TO START
+        TAP TO ENTER THE STORE
       </button>
     </div>
   </div>
@@ -54,6 +61,18 @@
     <div class="tooltip-hint">Click to view on IMDB</div>
   </div>
 
+  <!-- ===== MOBILE VIRTUAL JOYSTICK ===== -->
+  <div id="mobile-joystick" class="mobile-joystick hidden" aria-hidden="true">
+    <div id="joystick-base" class="joystick-base">
+      <div id="joystick-thumb" class="joystick-thumb"></div>
+    </div>
+  </div>
+
+  <!-- ===== MOBILE MOTION PERMISSION BUTTON ===== -->
+  <button id="motion-permission-btn" class="motion-permission-btn hidden" aria-label="Enable walking detection">
+    🚶 Enable Walking
+  </button>
+
   <!-- ===== 3D VR SCENE ===== -->
   <a-scene 
     keyboard-shortcuts="enterVR: true; resetSensor: true"
@@ -67,7 +86,7 @@
     </a-assets>
 
     <!-- Camera & Controls Rig -->
-    <a-entity id="rig" position="0 0 7" wasd-controls="acceleration: 45; fly: false" boundary-check>
+    <a-entity id="rig" position="0 0 7" wasd-controls="acceleration: 45; fly: false" boundary-check step-movement>
       <a-entity id="camera" camera look-controls="pointerLockEnabled: true" position="0 1.6 0">
         <!-- Laser controller / cursor interaction for clicking movies in VR or Desktop -->
         <a-cursor 
