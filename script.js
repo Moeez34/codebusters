@@ -1160,29 +1160,6 @@ function hideOverlay() {
   document.getElementById('overlay').classList.add('hidden');
 }
 
-// ===== POINTER LOCK & CROSSHAIR =====
-
-function initPointerLock() {
-  const overlay = document.getElementById('overlay');
-  const crosshair = document.getElementById('crosshair');
-
-  // Clicking overlay hides it and lets A-Frame capture pointer
-  overlay.addEventListener('click', () => {
-    hideOverlay();
-  });
-
-  // Show/hide crosshair based on pointer lock state
-  document.addEventListener('pointerlockchange', () => {
-    if (document.pointerLockElement) {
-      crosshair.classList.remove('hidden');
-    } else {
-      crosshair.classList.add('hidden');
-      crosshair.classList.remove('active');
-      hideTooltip();
-    }
-  });
-}
-
 // ===== CUSTOM A-FRAME COMPONENTS =====
 
 AFRAME.registerComponent('boundary-check', {
@@ -1209,9 +1186,9 @@ AFRAME.registerComponent('boundary-check', {
 
 AFRAME.registerComponent('step-movement', {
   schema: {
-    stepSize: { type: 'number', default: 0.55 },       // meters per step
-    threshold: { type: 'number', default: 12 },         // acceleration threshold to detect a step
-    cooldown: { type: 'number', default: 320 },          // minimum ms between steps
+    stepSize: { type: 'number', default: 0.55 },
+    threshold: { type: 'number', default: 12 },
+    cooldown: { type: 'number', default: 320 },
     enabled: { type: 'boolean', default: false }
   },
 
@@ -1277,7 +1254,7 @@ AFRAME.registerComponent('step-movement', {
     // Get the camera's world-space forward direction
     var direction = new THREE.Vector3(0, 0, -1);
     camera.object3D.getWorldDirection(direction);
-    direction.y = 0; // Keep movement horizontal
+    direction.y = 0;
     direction.normalize();
 
     var pos = rig.getAttribute('position');
@@ -1291,7 +1268,7 @@ AFRAME.registerComponent('step-movement', {
     if (!this.joystickActive) return;
     if (!delta) return;
 
-    var speed = 4.0; // meters per second
+    var speed = 4.0;
     var dt = delta / 1000;
 
     var camera = document.getElementById('camera');
@@ -1306,9 +1283,8 @@ AFRAME.registerComponent('step-movement', {
     var right = new THREE.Vector3();
     right.crossVectors(forward, new THREE.Vector3(0, 1, 0)).normalize();
 
-    // joystickX: left/right, joystickY: forward/back (inverted: -Y = forward)
     var moveX = this.joystickX * speed * dt;
-    var moveZ = -this.joystickY * speed * dt; // negative Y = push forward
+    var moveZ = -this.joystickY * speed * dt;
 
     var pos = this.el.getAttribute('position');
     pos.x += forward.x * moveZ + right.x * moveX;
@@ -1331,7 +1307,7 @@ function initVirtualJoystick() {
 
   var baseRect;
   var baseCenterX, baseCenterY;
-  var maxRadius = 38; // max thumb travel from center
+  var maxRadius = 38;
   var activeTouchId = null;
 
   function updateBaseRect() {
@@ -1399,17 +1375,14 @@ function initVirtualJoystick() {
     var dy = clientY - baseCenterY;
     var dist = Math.sqrt(dx * dx + dy * dy);
 
-    // Clamp to max radius
     if (dist > maxRadius) {
       dx = (dx / dist) * maxRadius;
       dy = (dy / dist) * maxRadius;
       dist = maxRadius;
     }
 
-    // Move thumb visually
     thumbEl.style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
 
-    // Normalize to -1..1
     var normX = dx / maxRadius;
     var normY = dy / maxRadius;
 
@@ -1422,11 +1395,67 @@ function initVirtualJoystick() {
   }
 }
 
-// ===== MOBILE DETECTION & MOTION PERMISSION =====
+// ===== POINTER LOCK & CROSSHAIR =====
+
+function initPointerLock() {
+  const overlay = document.getElementById('overlay');
+  const crosshair = document.getElementById('crosshair');
+
+  // Clicking overlay hides it, captures pointer, AND enables walking on mobile
+  overlay.addEventListener('click', () => {
+    hideOverlay();
+
+    // On mobile, request motion permission as part of this tap gesture (required by iOS)
+    if (isMobileDevice()) {
+      requestMotionAndEnableWalking();
+    }
+  });
+
+  // Show/hide crosshair based on pointer lock state
+  document.addEventListener('pointerlockchange', () => {
+    if (document.pointerLockElement) {
+      crosshair.classList.remove('hidden');
+    } else {
+      crosshair.classList.add('hidden');
+      crosshair.classList.remove('active');
+      hideTooltip();
+    }
+  });
+}
+
+// ===== MOBILE DETECTION & AUTO-WALKING =====
 
 function isMobileDevice() {
   return /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
     ('ontouchstart' in window && window.innerWidth <= 1024);
+}
+
+function requestMotionAndEnableWalking() {
+  if (typeof DeviceMotionEvent !== 'undefined' &&
+      typeof DeviceMotionEvent.requestPermission === 'function') {
+    // iOS 13+ requires explicit permission from a user gesture
+    DeviceMotionEvent.requestPermission()
+      .then(function (state) {
+        if (state === 'granted') {
+          enableStepDetection();
+        }
+      })
+      .catch(function (err) {
+        console.warn('DeviceMotion permission error:', err);
+      });
+  } else if ('DeviceMotionEvent' in window) {
+    // Android / older iOS — no permission needed, just enable
+    enableStepDetection();
+  }
+}
+
+function enableStepDetection() {
+  var rig = document.getElementById('rig');
+  if (!rig) return;
+  var comp = rig.components['step-movement'];
+  if (comp) {
+    comp.enableMotion();
+  }
 }
 
 function initMobileControls() {
@@ -1436,48 +1465,22 @@ function initMobileControls() {
   var joystickEl = document.getElementById('mobile-joystick');
   if (joystickEl) joystickEl.classList.remove('hidden');
 
-  // Show the motion permission button
-  var motionBtn = document.getElementById('motion-permission-btn');
-  if (motionBtn) motionBtn.classList.remove('hidden');
-
   // Init joystick touch handling
   initVirtualJoystick();
 
-  // Handle motion permission (required on iOS 13+)
-  motionBtn.addEventListener('click', function () {
-    if (typeof DeviceMotionEvent !== 'undefined' &&
-        typeof DeviceMotionEvent.requestPermission === 'function') {
-      // iOS 13+ requires explicit permission
-      DeviceMotionEvent.requestPermission()
-        .then(function (state) {
-          if (state === 'granted') {
-            enableStepDetection(motionBtn);
-          } else {
-            alert('Motion permission denied. You can still use the joystick to move.');
-          }
-        })
-        .catch(function (err) {
-          console.error('DeviceMotion permission error:', err);
-          alert('Could not request motion permission. You can still use the joystick.');
-        });
-    } else if ('DeviceMotionEvent' in window) {
-      // Android / older iOS — no permission needed
-      enableStepDetection(motionBtn);
-    } else {
-      alert('Your device does not support motion sensors. Use the joystick to move.');
+  // On Android, we can auto-enable step detection without a user gesture
+  if (typeof DeviceMotionEvent !== 'undefined' &&
+      typeof DeviceMotionEvent.requestPermission !== 'function') {
+    // Not iOS — no permission needed, enable walking immediately
+    // Wait for scene to be ready
+    var scene = document.querySelector('a-scene');
+    if (scene) {
+      scene.addEventListener('loaded', function () {
+        setTimeout(enableStepDetection, 2000);
+      });
     }
-  });
-}
-
-function enableStepDetection(btn) {
-  var rig = document.getElementById('rig');
-  if (!rig) return;
-  var comp = rig.components['step-movement'];
-  if (comp) {
-    comp.enableMotion();
-    btn.textContent = '🚶 Walking Active';
-    btn.classList.add('active');
   }
+  // On iOS, walking will be enabled when the user taps the overlay (user gesture required)
 }
 
 // ===== INIT =====
