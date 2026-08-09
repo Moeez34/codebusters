@@ -3,102 +3,167 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blockbuster 3D — Your Premium Movie Store</title>
-  <meta name="description" content="Browse our immersive 3D Blockbuster movie store. Explore curated collections of Comedy, Action, and Science Fiction blockbusters. Click any movie to visit its IMDB page.">
-  <meta name="keywords" content="blockbuster, movies, 3D store, comedy, action, sci-fi, IMDB">
-  <meta name="theme-color" content="#08080f">
+  <title>Blockbuster 3D VR Store — Walkthrough Experience</title>
+  <meta name="description" content="Experience a fully walkable 3D Virtual Reality replica of a classic Blockbuster video store. Walk down the aisles, browse movies, and visit IMDB pages.">
+  <meta name="theme-color" content="#002d8a">
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- A-Frame CDN -->
+  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 
-  <!-- Styles -->
+  <!-- Google Fonts & Custom CSS -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <!-- ===== Floating Particles ===== -->
-  <div id="particles" class="particles" aria-hidden="true"></div>
-
-  <!-- ===== Navigation ===== -->
-  <nav id="main-nav" class="nav" role="navigation" aria-label="Main navigation">
-    <div class="nav-brand">
-      <span class="nav-logo" aria-hidden="true">🎬</span>
-      <span class="nav-title">BLOCKBUSTER 3D</span>
+  <!-- ===== LOADING SCREEN ===== -->
+  <div id="loading-screen" class="loading-screen" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+    <h1 class="loading-logo">BLOCKBUSTER VIDEO</h1>
+    <p class="loading-subtitle">3D VR Store Experience</p>
+    <div class="loading-bar">
+      <div class="loading-progress"></div>
     </div>
-    <div class="nav-links">
-      <a href="#comedy" class="nav-link" data-genre="comedy" id="nav-comedy">🎭 Comedy</a>
-      <a href="#action" class="nav-link" data-genre="action" id="nav-action">💥 Action</a>
-      <a href="#scifi" class="nav-link" data-genre="scifi" id="nav-scifi">🚀 Sci-Fi</a>
+    <p class="loading-text">Generating retro shelf textures...</p>
+  </div>
+
+  <!-- ===== INSTRUCTIONS OVERLAY ===== -->
+  <div id="overlay" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+    <div class="overlay-content">
+      <h1 id="dialog-title">Welcome to Blockbuster!</h1>
+      <p class="subtitle">Virtual Reality Walkthrough</p>
+      
+      <div class="controls-info">
+        <div><strong>⌨️ Move:</strong> <span>W / A / S / D keys (or Arrow keys)</span></div>
+        <div><strong>🖱️ Look Around:</strong> <span>Move your mouse / drag screen</span></div>
+        <div><strong>🔴 Click Movie:</strong> <span>Opens its IMDB page in a new tab</span></div>
+        <div><strong>🌐 VR Mode:</strong> <span>Click the VR glasses icon at bottom-right</span></div>
+      </div>
+
+      <button class="click-prompt" style="background: none; border: none; font-size: inherit; font-family: inherit; cursor: pointer;">
+        CLICK ANYWHERE TO START
+      </button>
     </div>
-  </nav>
+  </div>
 
-  <!-- ===== Hero Section ===== -->
-  <header id="hero" class="hero">
-    <div class="hero-content">
-      <h1 class="hero-title">
-        <span class="title-line title-line-1">BLOCKBUSTER</span>
-        <span class="title-line title-line-2">3D STORE</span>
-      </h1>
-      <p class="hero-subtitle">Your premium movie collection awaits</p>
-      <a href="#comedy" class="hero-cta" id="browse-btn">Browse Collection</a>
-    </div>
-    <div class="scroll-indicator" aria-hidden="true">
-      <span>Scroll</span>
-      <div class="scroll-arrow"></div>
-    </div>
-  </header>
+  <!-- ===== RETICLE / CROSSHAIR ===== -->
+  <div id="crosshair" class="crosshair hidden" aria-hidden="true"></div>
 
-  <!-- ===== Main Store ===== -->
-  <main id="store" class="store">
+  <!-- ===== MOVIE TOOLTIP ===== -->
+  <div id="movie-tooltip" class="movie-tooltip hidden" aria-live="polite">
+    <h2 id="tooltip-title" class="tooltip-title">Movie Title</h2>
+    <div id="tooltip-info" class="tooltip-info">2026 · ★ 8.5</div>
+    <div class="tooltip-hint">Click to view on IMDB</div>
+  </div>
 
-    <!-- Comedy Section -->
-    <section id="comedy" class="genre-section" data-genre="comedy" aria-label="Comedy movies">
-      <div class="section-header">
-        <h2 class="neon-text comedy-neon">🎭 Comedy</h2>
-        <div class="section-line" aria-hidden="true"></div>
-      </div>
-      <div class="movie-shelf">
-        <div class="movie-grid" id="comedy-grid" role="list" aria-label="Comedy movie collection"></div>
-        <div class="shelf-bar" aria-hidden="true"></div>
-      </div>
-    </section>
+  <!-- ===== 3D VR SCENE ===== -->
+  <a-scene 
+    keyboard-shortcuts="enterVR: true; resetSensor: true"
+    renderer="antialias: true; colorManagement: true; logarithmicDepthBuffer: false"
+    loading-screen="enabled: false">
 
-    <!-- Action Section -->
-    <section id="action" class="genre-section" data-genre="action" aria-label="Action movies">
-      <div class="section-header">
-        <h2 class="neon-text action-neon">💥 Action</h2>
-        <div class="section-line" aria-hidden="true"></div>
-      </div>
-      <div class="movie-shelf">
-        <div class="movie-grid" id="action-grid" role="list" aria-label="Action movie collection"></div>
-        <div class="shelf-bar" aria-hidden="true"></div>
-      </div>
-    </section>
+    <!-- Assets management -->
+    <a-assets>
+      <!-- Floor texture mapping for noise/realism -->
+      <canvas id="canvas-floor" width="128" height="128" style="display:none;"></canvas>
+    </a-assets>
 
-    <!-- Science Fiction Section -->
-    <section id="scifi" class="genre-section" data-genre="scifi" aria-label="Science Fiction movies">
-      <div class="section-header">
-        <h2 class="neon-text scifi-neon">🚀 Science Fiction</h2>
-        <div class="section-line" aria-hidden="true"></div>
-      </div>
-      <div class="movie-shelf">
-        <div class="movie-grid" id="scifi-grid" role="list" aria-label="Science Fiction movie collection"></div>
-        <div class="shelf-bar" aria-hidden="true"></div>
-      </div>
-    </section>
+    <!-- Camera & Controls Rig -->
+    <a-entity id="rig" position="0 0 7" movement-controls="speed: 0.15; fly: false">
+      <a-entity id="camera" camera look-controls="pointerLockEnabled: true" position="0 1.6 0">
+        <!-- Laser controller / cursor interaction for clicking movies in VR or Desktop -->
+        <a-cursor 
+          id="scene-cursor"
+          raycaster="objects: .clickable" 
+          visible="false"
+          showLine="false">
+        </a-cursor>
+      </a-entity>
+    </a-entity>
 
-  </main>
+    <!-- Lighting -->
+    <!-- Ambient room illumination -->
+    <a-light type="ambient" color="#2b2d42" intensity="0.65"></a-light>
+    
+    <!-- Fluorescent Light Tubes on Ceiling -->
+    <!-- Row 1 -->
+    <a-light type="point" color="#fffff2" intensity="0.5" distance="18" position="-6 3.8 -5"></a-light>
+    <a-light type="point" color="#fffff2" intensity="0.5" distance="18" position="0 3.8 -5"></a-light>
+    <a-light type="point" color="#fffff2" intensity="0.5" distance="18" position="6 3.8 -5"></a-light>
+    <!-- Row 2 -->
+    <a-light type="point" color="#fffff2" intensity="0.5" distance="18" position="-6 3.8 2"></a-light>
+    <a-light type="point" color="#fffff2" intensity="0.5" distance="18" position="0 3.8 2"></a-light>
+    <a-light type="point" color="#fffff2" intensity="0.5" distance="18" position="6 3.8 2"></a-light>
 
-  <!-- ===== Footer ===== -->
-  <footer class="footer">
-    <p class="footer-text">
-      🎬 <span class="footer-accent">Blockbuster 3D Store</span> — Click any movie to visit its IMDB page
-    </p>
-  </footer>
+    <!-- Room Geometry -->
+    
+    <!-- Floor: Dark charcoal carpet -->
+    <a-plane 
+      position="0 0 0" 
+      rotation="-90 0 0" 
+      width="30" 
+      depth="20" 
+      material="color: #1a1a1f; roughness: 0.98; metalness: 0.1">
+    </a-plane>
 
-  <!-- Scripts -->
+    <!-- Ceiling: Cream drop tiles with realistic wood panel molding edges -->
+    <a-plane 
+      position="0 4 0" 
+      rotation="90 0 0" 
+      width="30" 
+      depth="20" 
+      material="color: #efeadb; roughness: 0.95">
+    </a-plane>
+
+    <!-- Fluorescent Light Fixtures (Ceiling Meshes) -->
+    <!-- Row 1 -->
+    <a-box position="-6 3.96 -5" width="3" height="0.08" depth="0.5" material="color: #ffffff; emissive: #ffffff; emissiveIntensity: 1"></a-box>
+    <a-box position="0 3.96 -5" width="3" height="0.08" depth="0.5" material="color: #ffffff; emissive: #ffffff; emissiveIntensity: 1"></a-box>
+    <a-box position="6 3.96 -5" width="3" height="0.08" depth="0.5" material="color: #ffffff; emissive: #ffffff; emissiveIntensity: 1"></a-box>
+    <!-- Row 2 -->
+    <a-box position="-6 3.96 2" width="3" height="0.08" depth="0.5" material="color: #ffffff; emissive: #ffffff; emissiveIntensity: 1"></a-box>
+    <a-box position="0 3.96 2" width="3" height="0.08" depth="0.5" material="color: #ffffff; emissive: #ffffff; emissiveIntensity: 1"></a-box>
+    <a-box position="6 3.96 2" width="3" height="0.08" depth="0.5" material="color: #ffffff; emissive: #ffffff; emissiveIntensity: 1"></a-box>
+
+    <!-- Back Wall (Shelf Unit + Dense DVDs) -->
+    <a-box position="0 2 -10" width="30" height="4" depth="0.1" material="color: #ffd700"></a-box> <!-- Yellow border band -->
+    <a-plane 
+      id="back-wall-dvds" 
+      position="0 1.6 -9.9" 
+      width="30" 
+      height="3.2" 
+      material="shader: flat; side: double">
+    </a-plane>
+
+    <!-- Left Wall (Shelf Unit + Dense DVDs) -->
+    <a-box position="-15 2 0" rotation="0 90 0" width="20" height="4" depth="0.1" material="color: #ffd700"></a-box>
+    <a-plane 
+      id="left-wall-dvds" 
+      position="-14.9 1.6 0" 
+      rotation="0 90 0" 
+      width="20" 
+      height="3.2" 
+      material="shader: flat; side: double">
+    </a-plane>
+
+    <!-- Right Wall (Shelf Unit + Dense DVDs) -->
+    <a-box position="15 2 0" rotation="0 -90 0" width="20" height="4" depth="0.1" material="color: #ffd700"></a-box>
+    <a-plane 
+      id="right-wall-dvds" 
+      position="14.9 1.6 0" 
+      rotation="0 -90 0" 
+      width="20" 
+      height="3.2" 
+      material="shader: flat; side: double">
+    </a-plane>
+
+    <!-- Front Entrance Wall (Double glass doors mockup) -->
+    <a-box position="0 2 10" width="30" height="4" depth="0.1" material="color: #002d8a"></a-box>
+    <!-- Glass doors visual -->
+    <a-plane position="-2 1.5 9.9" width="3" height="3" material="color: #5bb2d9; opacity: 0.45; transparent: true; side: double; metalness: 0.8; roughness: 0.1"></a-plane>
+    <a-plane position="2 1.5 9.9" width="3" height="3" material="color: #5bb2d9; opacity: 0.45; transparent: true; side: double; metalness: 0.8; roughness: 0.1"></a-plane>
+    
+  </a-scene>
+
+  <!-- Main JavaScript File -->
   <script src="script.js"></script>
 </body>
 </html>
