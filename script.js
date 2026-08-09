@@ -1187,8 +1187,8 @@ AFRAME.registerComponent('boundary-check', {
 AFRAME.registerComponent('step-movement', {
   schema: {
     stepSize: { type: 'number', default: 0.6 },
-    threshold: { type: 'number', default: 2.0 },     // m/s² — pure acceleration spike to count as step
-    cooldown: { type: 'number', default: 350 },       // min ms between steps
+    threshold: { type: 'number', default: 1.5 },
+    cooldown: { type: 'number', default: 350 },
     enabled: { type: 'boolean', default: false }
   },
 
@@ -1197,35 +1197,76 @@ AFRAME.registerComponent('step-movement', {
     this.rising = false;
     this.motionEnabled = false;
     this.smoothedMag = 0;
+    this.stepCount = 0;
+    this.lastDebugUpdate = 0;
+
+    // Tilt-to-walk state
+    this.tiltBeta = 0;       // phone tilt angle (forward/back)
+    this.tiltGamma = 0;      // phone tilt angle (left/right)
+    this.orientationEnabled = false;
 
     // Joystick state
     this.joystickActive = false;
     this.joystickX = 0;
     this.joystickY = 0;
 
-    // Bind the handler
+    // Bind handlers
     this._onDeviceMotion = this._onDeviceMotion.bind(this);
+    this._onDeviceOrientation = this._onDeviceOrientation.bind(this);
   },
 
   enableMotion: function () {
     if (this.motionEnabled) return;
     this.motionEnabled = true;
     this.data.enabled = true;
+
+    // Listen for acceleration (step detection)
     window.addEventListener('devicemotion', this._onDeviceMotion, true);
-    console.log('[StepMovement] Walking detection ENABLED');
+
+    // Listen for orientation (tilt-to-walk)
+    window.addEventListener('deviceorientation', this._onDeviceOrientation, true);
+    this.orientationEnabled = true;
+
+    // Update debug indicator
+    this._updateDebug('Motion: ON | Waiting...', true);
+    console.log('[StepMovement] Walking + tilt detection ENABLED');
   },
 
   disableMotion: function () {
     this.motionEnabled = false;
     this.data.enabled = false;
     window.removeEventListener('devicemotion', this._onDeviceMotion, true);
+    window.removeEventListener('deviceorientation', this._onDeviceOrientation, true);
+    this.orientationEnabled = false;
+  },
+
+  _updateDebug: function (text, isActive) {
+    var debugEl = document.getElementById('mobile-debug');
+    var statusEl = document.getElementById('debug-status');
+    if (!debugEl || !statusEl) return;
+    statusEl.textContent = text;
+    if (isActive) {
+      debugEl.classList.add('active');
+    } else {
+      debugEl.classList.remove('active');
+    }
+  },
+
+  _onDeviceOrientation: function (event) {
+    // beta = front-back tilt (0 = flat, 90 = upright, >90 = tilted towards user)
+    // gamma = left-right tilt
+    if (event.beta !== null) {
+      this.tiltBeta = event.beta;
+    }
+    if (event.gamma !== null) {
+      this.tiltGamma = event.gamma;
+    }
   },
 
   _onDeviceMotion: function (event) {
     if (!this.data.enabled) return;
 
     // Prefer acceleration (gravity removed) — gives clean motion data
-    // Fall back to accelerationIncludingGravity if not available
     var useRaw = !event.acceleration || (event.acceleration.x === null);
     var acc = useRaw ? event.accelerationIncludingGravity : event.acceleration;
     if (!acc) return;
@@ -1234,31 +1275,40 @@ AFRAME.registerComponent('step-movement', {
     var y = acc.y || 0;
     var z = acc.z || 0;
 
-    // Compute total acceleration magnitude (works regardless of phone orientation)
+    // Compute total acceleration magnitude (orientation-independent)
     var magnitude = Math.sqrt(x * x + y * y + z * z);
 
-    // If using accelerationIncludingGravity, subtract gravity baseline (~9.81)
+    // If using accelerationIncludingGravity, subtract gravity baseline
     if (useRaw) {
       magnitude = Math.abs(magnitude - 9.81);
     }
 
-    // Low-pass smoothing to filter sensor noise
+    // Low-pass smoothing
     this.smoothedMag = this.smoothedMag * 0.6 + magnitude * 0.4;
 
     var now = Date.now();
 
-    // Peak detection: rising edge when magnitude exceeds threshold
+    // Update debug indicator every 200ms
+    if (now - this.lastDebugUpdate > 200) {
+      this.lastDebugUpdate = now;
+      var src = useRaw ? 'RAW' : 'PURE';
+      this._updateDebug(
+        src + ' | Mag: ' + this.smoothedMag.toFixed(1) + ' | Steps: ' + this.stepCount,
+        true
+      );
+    }
+
+    // Peak detection
     if (!this.rising && this.smoothedMag > this.data.threshold) {
       this.rising = true;
     }
 
-    // Falling edge: magnitude drops below 40% of threshold = one step complete
     if (this.rising && this.smoothedMag < this.data.threshold * 0.4) {
       this.rising = false;
 
-      // Apply cooldown to prevent double-counting
       if (now - this.lastStepTime > this.data.cooldown) {
         this.lastStepTime = now;
+        this.stepCount++;
         this._moveForward(this.data.stepSize);
       }
     }
@@ -1269,10 +1319,9 @@ AFRAME.registerComponent('step-movement', {
     var camera = document.getElementById('camera');
     if (!camera) return;
 
-    // Get the camera's world-space forward direction
     var direction = new THREE.Vector3(0, 0, -1);
     camera.object3D.getWorldDirection(direction);
-    direction.y = 0; // Keep movement horizontal
+    direction.y = 0;
     direction.normalize();
 
     var pos = rig.getAttribute('position');
@@ -1282,32 +1331,79 @@ AFRAME.registerComponent('step-movement', {
   },
 
   tick: function (time, delta) {
-    // Handle joystick input every frame
-    if (!this.joystickActive) return;
     if (!delta) return;
-
-    var speed = 4.0;
     var dt = delta / 1000;
-
     var camera = document.getElementById('camera');
     if (!camera) return;
 
-    // Get camera forward and right vectors (horizontal only)
-    var forward = new THREE.Vector3(0, 0, -1);
-    camera.object3D.getWorldDirection(forward);
-    forward.y = 0;
-    forward.normalize();
-
-    var right = new THREE.Vector3();
-    right.crossVectors(forward, new THREE.Vector3(0, 1, 0)).normalize();
-
-    var moveX = this.joystickX * speed * dt;
-    var moveZ = -this.joystickY * speed * dt;
-
     var pos = this.el.getAttribute('position');
-    pos.x += forward.x * moveZ + right.x * moveX;
-    pos.z += forward.z * moveZ + right.z * moveX;
-    this.el.setAttribute('position', pos);
+    var moved = false;
+
+    // === TILT-TO-WALK ===
+    // When phone is held upright (~60-90° beta) and tilted forward past 70°, walk forward
+    // When tilted past 110°, walk backward
+    // Tilt left/right (gamma) to strafe
+    if (this.orientationEnabled && !this.joystickActive) {
+      var beta = this.tiltBeta;
+      var gamma = this.tiltGamma;
+
+      // Forward/back: beta ~90 = upright. <70 = tilted forward, >110 = tilted back
+      var forwardTilt = 0;
+      if (beta < 65) {
+        forwardTilt = (65 - beta) / 40;    // tilted forward → positive = walk forward
+        forwardTilt = Math.min(forwardTilt, 1.0);
+      } else if (beta > 115) {
+        forwardTilt = (115 - beta) / 40;   // tilted back → negative = walk backward
+        forwardTilt = Math.max(forwardTilt, -1.0);
+      }
+
+      // Strafe: gamma tilt
+      var strafeTilt = 0;
+      if (Math.abs(gamma) > 15) {
+        strafeTilt = gamma / 45;
+        strafeTilt = Math.max(-1.0, Math.min(1.0, strafeTilt));
+      }
+
+      if (Math.abs(forwardTilt) > 0.05 || Math.abs(strafeTilt) > 0.05) {
+        var speed = 3.5;
+
+        var forward = new THREE.Vector3(0, 0, -1);
+        camera.object3D.getWorldDirection(forward);
+        forward.y = 0;
+        forward.normalize();
+
+        var right = new THREE.Vector3();
+        right.crossVectors(forward, new THREE.Vector3(0, 1, 0)).normalize();
+
+        pos.x += (forward.x * forwardTilt + right.x * strafeTilt) * speed * dt;
+        pos.z += (forward.z * forwardTilt + right.z * strafeTilt) * speed * dt;
+        moved = true;
+      }
+    }
+
+    // === JOYSTICK ===
+    if (this.joystickActive) {
+      var speed = 4.0;
+
+      var forward = new THREE.Vector3(0, 0, -1);
+      camera.object3D.getWorldDirection(forward);
+      forward.y = 0;
+      forward.normalize();
+
+      var right = new THREE.Vector3();
+      right.crossVectors(forward, new THREE.Vector3(0, 1, 0)).normalize();
+
+      var moveX = this.joystickX * speed * dt;
+      var moveZ = -this.joystickY * speed * dt;
+
+      pos.x += forward.x * moveZ + right.x * moveX;
+      pos.z += forward.z * moveZ + right.z * moveX;
+      moved = true;
+    }
+
+    if (moved) {
+      this.el.setAttribute('position', pos);
+    }
   },
 
   remove: function () {
@@ -1452,27 +1548,58 @@ function requestMotionAndEnableWalking() {
   if (typeof DeviceMotionEvent !== 'undefined' &&
       typeof DeviceMotionEvent.requestPermission === 'function') {
     // iOS 13+ requires explicit permission from a user gesture
-    DeviceMotionEvent.requestPermission()
-      .then(function (state) {
-        if (state === 'granted') {
+    // Request both motion AND orientation permissions
+    Promise.all([
+      DeviceMotionEvent.requestPermission(),
+      typeof DeviceOrientationEvent !== 'undefined' &&
+        typeof DeviceOrientationEvent.requestPermission === 'function'
+        ? DeviceOrientationEvent.requestPermission()
+        : Promise.resolve('granted')
+    ])
+      .then(function (results) {
+        if (results[0] === 'granted') {
           enableStepDetection();
+        } else {
+          updateDebugStatus('Permission DENIED');
         }
       })
       .catch(function (err) {
-        console.warn('DeviceMotion permission error:', err);
+        console.warn('Motion permission error:', err);
+        updateDebugStatus('Permission ERROR: ' + err.message);
       });
   } else if ('DeviceMotionEvent' in window) {
     // Android / older iOS — no permission needed, just enable
     enableStepDetection();
+  } else {
+    updateDebugStatus('No motion API on this device');
   }
+}
+
+function updateDebugStatus(text) {
+  var statusEl = document.getElementById('debug-status');
+  if (statusEl) statusEl.textContent = text;
 }
 
 function enableStepDetection() {
   var rig = document.getElementById('rig');
-  if (!rig) return;
+  if (!rig) {
+    updateDebugStatus('ERROR: rig not found');
+    return;
+  }
   var comp = rig.components['step-movement'];
   if (comp) {
     comp.enableMotion();
+  } else {
+    updateDebugStatus('ERROR: component not ready');
+    // Retry after a short delay
+    setTimeout(function () {
+      var comp2 = rig.components['step-movement'];
+      if (comp2) {
+        comp2.enableMotion();
+      } else {
+        updateDebugStatus('ERROR: component failed to load');
+      }
+    }, 1000);
   }
 }
 
@@ -1483,6 +1610,10 @@ function initMobileControls() {
   var joystickEl = document.getElementById('mobile-joystick');
   if (joystickEl) joystickEl.classList.remove('hidden');
 
+  // Show the debug indicator
+  var debugEl = document.getElementById('mobile-debug');
+  if (debugEl) debugEl.classList.remove('hidden');
+
   // Init joystick touch handling
   initVirtualJoystick();
 
@@ -1490,12 +1621,16 @@ function initMobileControls() {
   if (typeof DeviceMotionEvent !== 'undefined' &&
       typeof DeviceMotionEvent.requestPermission !== 'function') {
     // Not iOS — no permission needed, enable walking immediately
-    // Wait for scene to be ready
     var scene = document.querySelector('a-scene');
     if (scene) {
-      scene.addEventListener('loaded', function () {
-        setTimeout(enableStepDetection, 2000);
-      });
+      if (scene.hasLoaded) {
+        // Scene already loaded
+        setTimeout(enableStepDetection, 500);
+      } else {
+        scene.addEventListener('loaded', function () {
+          setTimeout(enableStepDetection, 500);
+        });
+      }
     }
   }
   // On iOS, walking will be enabled when the user taps the overlay (user gesture required)

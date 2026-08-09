@@ -343,6 +343,35 @@ body {
   transform: scale(0.95);
 }
 
+/* ===== MOBILE DEBUG STATUS ===== */
+.mobile-debug {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 700;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.85);
+  color: #ff4444;
+  font-family: 'Outfit', monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 68, 68, 0.3);
+  pointer-events: none;
+}
+
+.mobile-debug.hidden {
+  display: none;
+}
+
+.mobile-debug.active {
+  color: #00ff64;
+  border-color: rgba(0, 255, 100, 0.3);
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 600px) {
   .loading-logo {
