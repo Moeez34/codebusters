@@ -749,6 +749,79 @@ const movieSynopses = {
   "Monsters Inc": "In order to power the city, monsters must scream-collect children. But when a small girl accidentally enters their world, two friendly monsters must hide her from authorities."
 };
 
+// ===== YOUTUBE TRAILER VIDEO IDS =====
+const movieTrailers = {
+  // Comedy
+  "The Hangover": "tcdUhdOlz9M",
+  "Superbad": "4eaZ_adeFY0",
+  "Bridesmaids": "FNPpTU-ec4I",
+  "Step Brothers": "8QfNhnS512U",
+  "Mean Girls": "oDU8F_Ao17M",
+  "Dumb & Dumber": "l13yPhimE3o",
+  "Anchorman": "-T3wnP91yBE",
+  "Napoleon Dynamite": "ZHDi_AnqwCo",
+  "Grand Budapest Hotel": "1Fg5iWmQjwk",
+  "Borat": "Ke1Y334KAG0",
+  "Shaun of the Dead": "LFGUtumg8Xs",
+  "Tropic Thunder": "T-6Yh0ADUPU",
+
+  // Action
+  "Mad Max: Fury Road": "hEJnMQG96dM",
+  "John Wick": "2AUmvWm5ep4",
+  "The Dark Knight": "EXeTwQWrcwY",
+  "Die Hard": "jaJuwKCmJbY",
+  "Gladiator": "ol67qo3WhCw",
+  "Top Gun: Maverick": "giXcoGa8nzo",
+  "Mission Impossible": "g4f3u3-5rR0",
+  "Kill Bill Vol.1": "ot6C1ZKyiME",
+  "The Raid": "m6Q7KnF1Ppg",
+  "300": "UrIbxk7idM4",
+  "Logan": "Div0iP65a82",
+  "Fury": "-OGvZoIrXpg",
+
+  // Sci-Fi
+  "Interstellar": "zSWdZAIGM3E",
+  "Blade Runner 2049": "gCcx85zVzQA",
+  "The Matrix": "vKQi3bBA1y8",
+  "Inception": "YoHD9XEInc0",
+  "Dune": "n9DwoQ7HWvI",
+  "Alien": "jQ5lUy9wib4",
+  "Terminator 2": "CRRlbK5w8AE",
+  "Arrival": "tFMo3UJ4B4g",
+  "Ex Machina": "bggUmgeMCdc",
+  "The Martian": "ej3ioOneTy8",
+  "Edge of Tomorrow": "vw61gCe2oqI",
+  "Gravity": "OiTiKOy5AMo",
+
+  // Drama
+  "Shawshank Redemption": "PLl99DlL6b4",
+  "Forrest Gump": "bLvqoHBptjg",
+  "Fight Club": "qtRqyP4UoXQ",
+  "The Godfather": "UaVTIH8mujA",
+  "Pulp Fiction": "s7EdQ4FqbhY",
+  "Schindler's List": "gG22XNhtnoY",
+  "Whiplash": "7d_jQPpyC0o",
+  "Parasite": "5xH0HfJHsaY",
+  "The Prestige": "o4gHCmTQDxs",
+  "Good Will Hunting": "PaZVjZOgYb4",
+  "A Beautiful Mind": "aS_d0GbwdQk",
+  "The Green Mile": "Ki4haFrqSrw",
+
+  // Family
+  "Toy Story": "v-PjgYDrgHY",
+  "Finding Nemo": "wZdpNglHQdU",
+  "The Incredibles": "eZbZB7S_SJQ",
+  "Up": "ORFWdXl_zJ4",
+  "Shrek": "OoRdpMJ55u8",
+  "Frozen": "TbQm5AMF_A4",
+  "The Lion King": "7T57ToZH4e8",
+  "Coco": "xlnPHQ3TLX8",
+  "Moana": "LKFuXETZUsI",
+  "Ratatouille": "NgsQ8mUZo5k",
+  "WALL-E": "CZ1CATLaXJK",
+  "Monsters Inc": "CG17csaTz9M"
+};
+
 // ===== TEXTURE GENERATORS =====
 
 /** Generate a canvas texture simulating a dense grid of DVD cases on shelves */
@@ -1231,13 +1304,38 @@ function hideLoadingScreen() {
 
 function hideOverlay() {
   document.getElementById('overlay').classList.add('hidden');
+  if (typeof startBgm === 'function') {
+    startBgm();
+  }
 }
 
 // ===== CUSTOM A-FRAME COMPONENTS =====
 
 AFRAME.registerComponent('boundary-check', {
+  init: function () {
+    this.lastPos = new THREE.Vector3();
+    this.lastPos.copy(this.el.getAttribute('position'));
+    this.lastFootstepTime = 0;
+  },
+
   tick: function () {
     var pos = this.el.getAttribute('position');
+    
+    // Play footsteps if moving
+    var distMoved = this.lastPos.distanceTo(pos);
+    if (distMoved > 0.005) {
+      this.lastPos.copy(pos);
+      if (typeof isInspecting !== 'undefined' && !isInspecting) {
+        var now = Date.now();
+        if (now - this.lastFootstepTime > 450) {
+          this.lastFootstepTime = now;
+          if (typeof playSfx === 'function') {
+            playSfx('footstep');
+          }
+        }
+      }
+    }
+
     var minX = -13.8;
     var maxX = 13.8;
     var minZ = -8.8;
@@ -1902,6 +2000,11 @@ function startInspection(movie, clickedEntity) {
     easing: 'easeOutBack'
   });
 
+  // Play pick up thunk sound
+  if (typeof playSfx === 'function') {
+    playSfx('grab');
+  }
+
   // Set HUD content
   document.getElementById('inspect-title').textContent = movie.title;
   document.getElementById('inspect-meta').textContent = `${movie.year}  ·  ★ ${movie.rating}  ·  ${movie.genre ? movie.genre.toUpperCase() : 'SPECIAL'}`;
@@ -1921,6 +2024,11 @@ function stopInspection() {
 
   const inspectBox = document.getElementById('inspection-box');
   if (!inspectBox) return;
+
+  // Play put back thunk sound
+  if (typeof playSfx === 'function') {
+    playSfx('putback');
+  }
 
   // Hide HUD overlay immediately
   document.getElementById('inspect-overlay').classList.add('hidden');
@@ -2154,6 +2262,9 @@ function initRotationHandlers() {
 function initInspectionControls() {
   const btnClose = document.getElementById('inspect-btn-close');
   const btnImdb = document.getElementById('inspect-btn-imdb');
+  const btnTrailer = document.getElementById('inspect-btn-trailer');
+  const btnTrailerClose = document.getElementById('trailer-modal-close');
+  const bgmToggle = document.getElementById('bgm-toggle');
 
   if (btnClose) {
     btnClose.addEventListener('click', (e) => {
@@ -2173,8 +2284,207 @@ function initInspectionControls() {
     });
   }
 
+  if (btnTrailer) {
+    btnTrailer.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      openTrailer();
+    });
+  }
+
+  if (btnTrailerClose) {
+    btnTrailerClose.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      closeTrailer();
+    });
+  }
+
+  if (bgmToggle) {
+    bgmToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleBgm();
+    });
+  }
+
+  // Backdrops clicks close the modal
+  const backdrop = document.querySelector('.trailer-modal-backdrop');
+  if (backdrop) {
+    backdrop.addEventListener('click', closeTrailer);
+  }
+
   initRotationHandlers();
 }
+
+// ===== AUDIO & SOUND EFFECTS SYSTEM =====
+
+let audioCtx = null;
+
+function getAudioContext() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+  return audioCtx;
+}
+
+function playSfx(type) {
+  try {
+    const ctx = getAudioContext();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    if (type === 'footstep') {
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(55, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(10, ctx.currentTime + 0.15);
+      gain.gain.setValueAtTime(0.04, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.16);
+    } else if (type === 'grab') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(160, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 0.12);
+      gain.gain.setValueAtTime(0.12, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.13);
+    } else if (type === 'putback') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(110, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(190, ctx.currentTime + 0.14);
+      gain.gain.setValueAtTime(0.10, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.16);
+    }
+  } catch (err) {
+    console.warn('Web Audio SFX blocked or failed:', err);
+  }
+}
+
+// ===== AMBIENT BACKGROUND MUSIC =====
+
+let bgmAudio = null;
+let isMusicMuted = false;
+let isBgmPlaying = false;
+
+function startBgm() {
+  if (bgmAudio) return;
+  
+  bgmAudio = new Audio('https://assets.mixkit.co/music/preview/mixkit-retro-futurism-150.mp3');
+  bgmAudio.loop = true;
+  bgmAudio.volume = 0.45; // Gentle ambient volume
+
+  bgmAudio.play()
+    .then(() => {
+      isBgmPlaying = true;
+      updateBgmButtonUI();
+    })
+    .catch((err) => {
+      console.warn('BGM Autoplay blocked: playing on interaction.', err);
+    });
+}
+
+function pauseBgm() {
+  if (bgmAudio && isBgmPlaying) {
+    bgmAudio.pause();
+    isBgmPlaying = false;
+  }
+}
+
+function resumeBgm() {
+  if (bgmAudio && !isBgmPlaying && !isMusicMuted) {
+    bgmAudio.play()
+      .then(() => {
+        isBgmPlaying = true;
+      })
+      .catch(err => console.warn(err));
+  }
+}
+
+function toggleBgm() {
+  if (!bgmAudio) {
+    startBgm();
+    return;
+  }
+
+  isMusicMuted = !isMusicMuted;
+  
+  if (isMusicMuted) {
+    bgmAudio.pause();
+    isBgmPlaying = false;
+  } else {
+    bgmAudio.play()
+      .then(() => {
+        isBgmPlaying = true;
+      })
+      .catch(err => console.warn(err));
+  }
+  updateBgmButtonUI();
+}
+
+function updateBgmButtonUI() {
+  const btn = document.getElementById('bgm-toggle');
+  if (!btn) return;
+  const icon = btn.querySelector('.music-icon');
+  const text = btn.querySelector('.music-text');
+
+  if (isMusicMuted) {
+    btn.classList.add('muted');
+    if (text) text.textContent = 'MUSIC OFF';
+    if (icon) icon.textContent = '🔇';
+  } else {
+    btn.classList.remove('muted');
+    if (text) text.textContent = 'MUSIC ON';
+    if (icon) icon.textContent = '🎵';
+  }
+}
+
+// ===== MOVIE TRAILER EMBED CONTROLLER =====
+
+function openTrailer() {
+  if (!activeInspectMovie) return;
+
+  const trailerModal = document.getElementById('trailer-modal');
+  const iframe = document.getElementById('trailer-iframe');
+  if (!trailerModal || !iframe) return;
+
+  const videoId = movieTrailers[activeInspectMovie.title];
+  if (videoId) {
+    // Pause background music while trailer plays
+    pauseBgm();
+    
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1`;
+    trailerModal.classList.remove('hidden');
+  } else {
+    window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(activeInspectMovie.title + ' official trailer')}`, '_blank');
+  }
+}
+
+function closeTrailer() {
+  const trailerModal = document.getElementById('trailer-modal');
+  const iframe = document.getElementById('trailer-iframe');
+  if (!trailerModal || !iframe) return;
+
+  // Clear iframe source to immediately halt playback and unload
+  iframe.src = '';
+  trailerModal.classList.add('hidden');
+
+  // Resume background music loop
+  resumeBgm();
+}
+
 
 // ===== INIT =====
 

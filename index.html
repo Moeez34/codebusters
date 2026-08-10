@@ -81,6 +81,12 @@
     <span id="debug-status">Motion: OFF</span>
   </div>
 
+  <!-- ===== AUDIO CONTROLS ===== -->
+  <button id="bgm-toggle" class="bgm-toggle" aria-label="Toggle background music">
+    <span class="music-icon">🎵</span>
+    <span class="music-text">MUSIC ON</span>
+  </button>
+
   <!-- ===== 3D DVD INSPECTION OVERLAY ===== -->
   <div id="inspect-overlay" class="inspect-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="inspect-title">
     <div class="inspect-hud-card">
@@ -90,7 +96,20 @@
       
       <div class="inspect-actions">
         <button id="inspect-btn-close" class="inspect-btn btn-secondary">◀ PUT BACK</button>
+        <button id="inspect-btn-trailer" class="inspect-btn btn-trailer">🎬 WATCH TRAILER</button>
         <button id="inspect-btn-imdb" class="inspect-btn btn-primary">RENT NOW (IMDB) ▶</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== YOUTUBE TRAILER MODAL OVERLAY ===== -->
+  <div id="trailer-modal" class="trailer-modal hidden" role="dialog" aria-modal="true" aria-labelledby="trailer-modal-title">
+    <div class="trailer-modal-backdrop"></div>
+    <div class="trailer-modal-content">
+      <button id="trailer-modal-close" class="trailer-modal-close" aria-label="Close Trailer">×</button>
+      <h3 id="trailer-modal-title" class="sr-only">Movie Trailer</h3>
+      <div class="trailer-iframe-wrapper">
+        <iframe id="trailer-iframe" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
     </div>
   </div>
