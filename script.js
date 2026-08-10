@@ -2382,10 +2382,10 @@ let isBgmPlaying = false;
 function startBgm() {
   if (bgmAudio) return;
   
-  // Use a highly reliable, hotlink-friendly open CDN audio source
-  bgmAudio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3');
+  // Use a highly reliable, hotlink-friendly open CDN audio source (90s-2000s electronic-pop)
+  bgmAudio = new Audio('https://incompetech.com/music/royalty-free/mp3-royaltyfree/Ice%20Flow.mp3');
   bgmAudio.loop = true;
-  bgmAudio.volume = 0.35; // Comfortable background ambient volume
+  bgmAudio.volume = 0.28; // Slightly lower volume for this energetic track
 
   bgmAudio.play()
     .then(() => {
