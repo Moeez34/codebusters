@@ -1908,7 +1908,6 @@ function startInspection(movie, clickedEntity) {
   
   // Show UI overlays
   document.getElementById('inspect-overlay').classList.remove('hidden');
-  document.getElementById('hands-overlay').classList.remove('hidden');
 
   // Hide mobile joystick and D-pad during inspection
   var joystickEl = document.getElementById('mobile-joystick');
@@ -1923,9 +1922,8 @@ function stopInspection() {
   const inspectBox = document.getElementById('inspection-box');
   if (!inspectBox) return;
 
-  // Hide HUD & hands overlays immediately
+  // Hide HUD overlay immediately
   document.getElementById('inspect-overlay').classList.add('hidden');
-  document.getElementById('hands-overlay').classList.add('hidden');
 
   // Restore joystick and D-pad on mobile
   if (isMobileDevice()) {
