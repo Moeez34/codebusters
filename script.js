@@ -676,6 +676,79 @@ const movieData = {
   ]
 };
 
+// ===== MOVIE SYNOPSES FOR RETRO BACK COVERS =====
+const movieSynopses = {
+  // Comedy
+  "The Hangover": "Three buddies wake up from a wild bachelor party in Las Vegas with no memory of the previous night and the groom missing. They must retrace their steps through the city to find him before the wedding.",
+  "Superbad": "Two co-dependent high school seniors are forced to deal with separation anxiety after their elaborate plan to secure alcohol for a major house party goes hilariously awry.",
+  "Bridesmaids": "Competition between the maid of honor and a wealthy bridesmaid over who is the bride's true best friend threatens to completely upend the chaotic life of a struggling pastry chef.",
+  "Step Brothers": "Two middle-aged, spoiled, unemployed men still living with their respective parents are forced to become roommates when their parents marry, triggering an escalating war of childish pranks.",
+  "Mean Girls": "Cady Heron is a hit with The Plastics, the A-list girl clique at her new school, until she makes the mistake of falling for Aaron Samuels, the ex-boyfriend of alpha Plastique Regina George.",
+  "Dumb & Dumber": "After a woman leaves a briefcase at the airport terminal, two extremely dim-witted friends embark on an cross-country road trip to Aspen to return it, unaware it contains ransom money.",
+  "Anchorman": "Ron Burgundy is San Diego's top-rated news anchorman in the male-dominated 1970s broadcast world, but his position is threatened when an ambitious newswoman is hired as co-anchor.",
+  "Napoleon Dynamite": "A listless and alienated teenager in Idaho decides to help his eccentric new friend Pedro win the class presidency, while navigating his bizarre family life at home.",
+  "Grand Budapest Hotel": "A writer relates his adventures at a renowned European resort hotel between the wars, featuring a legendary concierge falsely accused of murder and his loyal lobby boy.",
+  "Borat": "Kazakh TV talking head Borat Sagdiyev travels to the United States to report on the 'Greatest Country in the World' in this satirical mockumentary of cultural clashes.",
+  "Shaun of the Dead": "A man's uneventful life is disrupted when he has to single-handedly deal with his girlfriend, his mother, and an entire community of local residents who have turned into flesh-eating zombies.",
+  "Tropic Thunder": "While shooting a big-budget war movie, a crew of self-absorbed actors are dropped into the middle of a real jungle combat zone and forced to become the soldiers they are playing.",
+
+  // Action
+  "Mad Max: Fury Road": "In a post-apocalyptic wasteland, a woman rebels against a tyrannical ruler in search for her homeland with the aid of a group of female prisoners, a psychotic worshiper, and a drifter named Max.",
+  "John Wick": "An ex-hitman comes out of retirement to track down the gangsters that killed his dog, a final gift from his recently deceased wife, embarking on a ruthless, action-packed revenge mission.",
+  "The Dark Knight": "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.",
+  "Die Hard": "An NYPD officer tries to save his estranged wife and several others taken hostage by a band of highly trained German terrorists during a Christmas Eve party at Nakatomi Plaza.",
+  "Gladiator": "A former Roman General sets out to exact vengeance against the corrupt emperor who murdered his family and sent him into slavery, rising through the ranks of the gladiator arena.",
+  "Top Gun: Maverick": "After thirty years of service as one of the Navy's top aviators, Pete 'Maverick' Mitchell is tasked with training a detachment of graduates for a dangerous and specialized mission.",
+  "Mission Impossible": "Ethan Hunt and his IMF team embark on their most dangerous mission yet: to track down a rogue organization planning to trigger a global catastrophe using stolen nuclear cores.",
+  "Kill Bill Vol.1": "After awakening from a four-year coma, a former assassin seeks vengeance against the team of killers who betrayed her, led by her former master, Bill.",
+  "The Raid": "A SWAT team becomes trapped in a high-rise tenement block run by a ruthless drug lord and his army of killers, forcing them to fight their way up floor-by-floor using hand-to-hand combat.",
+  "300": "King Leonidas of Sparta and a force of 300 men fight to the death against the Persian King Xerxes and his massive invading army of over 300,000 soldiers at the Battle of Thermopylae.",
+  "Logan": "In a future where mutants are nearly extinct, a weary Logan cares for an ailing Professor X in a hideout on the Mexican border, until a young mutant chased by dark forces arrives.",
+  "Fury": "A battle-hardened army sergeant commands a Sherman tank and its five-man crew on a deadly mission behind enemy lines in Nazi Germany during the final weeks of World War II.",
+
+  // Sci-Fi
+  "Interstellar": "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival on a dying Earth, navigating extreme time dilation and cosmic mysteries.",
+  "Blade Runner 2049": "A new blade runner, LAPD Officer K, unearths a long-buried secret that has the potential to plunge what is left of society into chaos, leading him to track down Rick Deckard.",
+  "The Matrix": "A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its war-like controllers in this cyberpunk masterpiece.",
+  "Inception": "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O., navigating layers of subconscious.",
+  "Dune": "Paul Atreides, a brilliant and gifted young man born into a great destiny, must travel to the most dangerous planet in the universe to ensure the future of his family and his people.",
+  "Alien": "The crew of a commercial spacecraft encounter a deadly lifeform after investigating a mysterious transmission from an undeveloped planet, fighting to survive a claustrophobic nightmare.",
+  "Terminator 2": "A cyborg, identical to the one who failed to kill Sarah Connor, must now protect her young son John from a more advanced and devastating shape-shifting terminator.",
+  "Arrival": "A linguist is recruited by the military to assist in translating communications with sentient extraterrestrial lifeforms after twelve mysterious spacecraft touch down around the globe.",
+  "Ex Machina": "A programmer at a huge internet-search giant wins a competition to spend a week at the private mountain estate of the company's brilliant CEO, only to administer a Turing test on an A.I.",
+  "The Martian": "An astronaut becomes stranded on Mars after his crew mates presume him dead, and must rely on his scientific ingenuity to find a way to signal Earth and survive.",
+  "Edge of Tomorrow": "A soldier fighting aliens finds himself caught in a time loop, waking up on the same battlefield every time he dies, teaming up with a legendary warrior to find a way to win.",
+  "Gravity": "Two astronauts work together to survive after an accident leaves them stranded in deep orbit with no connection to Earth and a rapidly depleting oxygen supply.",
+
+  // Drama
+  "Shawshank Redemption": "Over the course of several years, two convicts form a deep friendship, seeking consolation and, eventually, redemption through basic compassion inside a brutal state prison.",
+  "Forrest Gump": "The presidencies of Kennedy and Johnson, the Vietnam War, the Watergate scandal and other historical events unfold from the perspective of an Alabama man with an IQ of 75.",
+  "Fight Club": "An insomniac office worker and a devil-may-care soap maker form an underground fight club that evolves into something much more dangerous and revolutionary.",
+  "The Godfather": "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant youngest son, Michael, in this legendary crime saga.",
+  "Pulp Fiction": "The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence, redemption, and dark comedy.",
+  "Schindler's List": "In German-occupied Poland during World War II, industrialist Oskar Schindler gradually becomes concerned for his Jewish workforce after witnessing their persecution by the Nazis.",
+  "Whiplash": "A promising young drummer enrolls at a cut-throat music conservatory where his dreams of greatness are mentored by an instructor who will stop at nothing to realize a student's potential.",
+  "Parasite": "Greed and class discrimination threaten the newly formed symbiotic relationship between the wealthy Park family and the destitute Kim clan, culminating in a shocking confrontation.",
+  "The Prestige": "After a tragic accident, two stage magicians in 19th-century London engage in a battle of one-upmanship to create the ultimate illusion, sacrificing everything they hold dear.",
+  "Good Will Hunting": "Will Hunting, a janitor at M.I.T., has a gift for mathematics, but needs help from a psychologist in order to find direction in his life and face his childhood trauma.",
+  "A Beautiful Mind": "After John Nash, a brilliant but asocial mathematician, accepts secret work in cryptography, his life takes a turn for the nightmarish as he battles severe schizophrenia.",
+  "The Green Mile": "The lives of guards on death row are affected by one of their charges: a black man accused of child murder and rape, who possesses a mysterious, miraculous healing gift.",
+
+  // Family
+  "Toy Story": "A cowboy toy is profoundly threatened and jealous when a new spaceman figure supplants him as top toy in a boy's bedroom, embarking on an adventure to find their way home.",
+  "Finding Nemo": "After his son is captured in the Great Barrier Reef and taken to Sydney, a timid clownfish embarks on a dangerous journey across the ocean to bring him home.",
+  "The Incredibles": "A family of undercover superheroes, while trying to live the quiet suburban life, are forced into action to save the world from a vengeful former fan.",
+  "Up": "Seventy-eight-year-old Carl Fredricksen travels to Paradise Falls in his house equipped with thousands of balloons, accidentally taking a young Wilderness Explorer along for the ride.",
+  "Shrek": "An ogre finds his swamp invaded by fairytale creatures banished by Lord Farquaad. To get his swamp back, he agrees to rescue a princess who harbors a dark secret.",
+  "Frozen": "When the newly crowned Queen Elsa accidentally uses her power to turn things into ice to condemn her home to infinite winter, her sister Anna teams up to save their kingdom.",
+  "The Lion King": "A young lion prince, Simba, flees his kingdom after his father is murdered by his uncle, only to learn the true meaning of responsibility and valor when he returns.",
+  "Coco": "Aspiring musician Miguel, confronted with his family's ancestral ban on music, enters the Land of the Dead to find his great-great-grandfather, a legendary singer.",
+  "Moana": "In Ancient Polynesia, when a terrible curse reaches Moana's island, she answers the Ocean's call to seek out the Demigod Maui to set things right and save her people.",
+  "Ratatouille": "A young rat who dreams of becoming a renowned French chef allies with a clumsy kitchen boy at a famous Parisian restaurant to cook exquisite meals in secret.",
+  "WALL-E": "In the distant future, a small waste-collecting robot embarked on a space journey that will ultimately decide the fate of mankind after meeting a sleek probe named EVE.",
+  "Monsters Inc": "In order to power the city, monsters must scream-collect children. But when a small girl accidentally enters their world, two friendly monsters must hide her from authorities."
+};
+
 // ===== TEXTURE GENERATORS =====
 
 /** Generate a canvas texture simulating a dense grid of DVD cases on shelves */
@@ -1079,9 +1152,9 @@ function createMoviePoster(scene, movie, x, y, z, rotY, w, h) {
   entity.setAttribute('rotation', `0 ${rotY} 0`);
   entity.classList.add('clickable');
 
-  // Click → IMDB
+  // Click → Inspect Movie
   entity.addEventListener('click', () => {
-    window.open(movie.imdb, '_blank');
+    startInspection(movie, entity);
   });
 
   // Hover effects
@@ -1335,6 +1408,7 @@ AFRAME.registerComponent('step-movement', {
   },
 
   tick: function (time, delta) {
+    if (this.isInspecting) return;
     if (!delta) return;
     var dt = delta / 1000;
     var camera = document.getElementById('camera');
@@ -1728,6 +1802,382 @@ function initMobileControls() {
   }
 }
 
+// ===== 3D DVD INSPECTION SYSTEM =====
+
+let isInspecting = false;
+let activeInspectMovie = null;
+let originalClickedEntity = null;
+let isDragging = false;
+let previousMousePosition = { x: 0, y: 0 };
+let currentRotation = { x: 0, y: 0 };
+
+function startInspection(movie, clickedEntity) {
+  if (isInspecting) return;
+  isInspecting = true;
+  activeInspectMovie = movie;
+  originalClickedEntity = clickedEntity;
+
+  // Exit Pointer Lock so desktop users can click the HUD buttons and drag to rotate easily
+  document.exitPointerLock();
+
+  // Hide tooltips and pointer lock crosshair
+  hideTooltip();
+  document.getElementById('crosshair').classList.add('hidden');
+
+  // Disable movement controls
+  const rig = document.getElementById('rig');
+  if (rig && rig.components['wasd-controls']) {
+    rig.components['wasd-controls'].pause();
+  }
+  if (rig && rig.components['step-movement']) {
+    rig.components['step-movement'].joystickActive = false;
+    rig.components['step-movement'].dpadX = 0;
+    rig.components['step-movement'].dpadY = 0;
+    rig.components['step-movement'].isInspecting = true;
+  }
+
+  // Pause camera look-controls so camera orientation remains fixed
+  const camera = document.getElementById('camera');
+  if (camera && camera.components['look-controls']) {
+    camera.components['look-controls'].pause();
+  }
+
+  // Generate dynamic retro back cover
+  const backCanvas = generateDVDBackCover(movie);
+  const canvasId = `canvas-back-${Date.now()}`;
+  backCanvas.setAttribute('id', canvasId);
+  backCanvas.style.display = 'none';
+  document.body.appendChild(backCanvas);
+
+  // Create Inspection 3D Box inside camera space
+  const inspectBox = document.createElement('a-entity');
+  inspectBox.setAttribute('id', 'inspection-box');
+  inspectBox.setAttribute('position', '0 0 -2.5'); // Start further back for zoom-in animation
+  inspectBox.setAttribute('rotation', '0 0 0'); // Start facing forward
+  inspectBox.setAttribute('scale', '0.05 0.05 0.05'); // Start tiny
+
+  // Case body (black plastic)
+  const caseBody = document.createElement('a-box');
+  caseBody.setAttribute('width', '0.32');
+  caseBody.setAttribute('height', '0.45');
+  caseBody.setAttribute('depth', '0.025');
+  caseBody.setAttribute('material', 'color: #121214; roughness: 0.85; metalness: 0.1; shader: standard');
+  inspectBox.appendChild(caseBody);
+
+  // Front Cover
+  const proxiedPoster = `https://images.weserv.nl/?url=${encodeURIComponent(movie.poster)}`;
+  const frontCover = document.createElement('a-plane');
+  frontCover.setAttribute('width', '0.316');
+  frontCover.setAttribute('height', '0.446');
+  frontCover.setAttribute('position', '0 0 0.013');
+  frontCover.setAttribute('material', `src: ${proxiedPoster}; shader: flat; side: double; roughness: 0.95`);
+  inspectBox.appendChild(frontCover);
+
+  // Back Cover
+  const backCover = document.createElement('a-plane');
+  backCover.setAttribute('width', '0.316');
+  backCover.setAttribute('height', '0.446');
+  backCover.setAttribute('position', '0 0 -0.013');
+  backCover.setAttribute('rotation', '0 180 0');
+  backCover.setAttribute('material', `src: #${canvasId}; shader: flat; side: double; roughness: 0.95`);
+  inspectBox.appendChild(backCover);
+
+  // Append inspectBox to camera so it remains centered
+  camera.appendChild(inspectBox);
+
+  // Set up rotation state
+  currentRotation = { x: 0, y: 0 };
+
+  // Trigger Zoom-In animation
+  inspectBox.setAttribute('animation__pos', {
+    property: 'position',
+    to: '0 0 -0.65',
+    dur: 600,
+    easing: 'easeOutBack'
+  });
+  inspectBox.setAttribute('animation__scale', {
+    property: 'scale',
+    to: '1 1 1',
+    dur: 600,
+    easing: 'easeOutBack'
+  });
+
+  // Set HUD content
+  document.getElementById('inspect-title').textContent = movie.title;
+  document.getElementById('inspect-meta').textContent = `${movie.year}  ·  ★ ${movie.rating}  ·  ${movie.genre ? movie.genre.toUpperCase() : 'SPECIAL'}`;
+  
+  // Show UI overlays
+  document.getElementById('inspect-overlay').classList.remove('hidden');
+  document.getElementById('hands-overlay').classList.remove('hidden');
+
+  // Hide mobile joystick and D-pad during inspection
+  var joystickEl = document.getElementById('mobile-joystick');
+  if (joystickEl) joystickEl.classList.add('hidden');
+  var dpadEl = document.getElementById('mobile-dpad');
+  if (dpadEl) dpadEl.classList.add('hidden');
+}
+
+function stopInspection() {
+  if (!isInspecting) return;
+
+  const inspectBox = document.getElementById('inspection-box');
+  if (!inspectBox) return;
+
+  // Hide HUD & hands overlays immediately
+  document.getElementById('inspect-overlay').classList.add('hidden');
+  document.getElementById('hands-overlay').classList.add('hidden');
+
+  // Restore joystick and D-pad on mobile
+  if (isMobileDevice()) {
+    var joystickEl = document.getElementById('mobile-joystick');
+    if (joystickEl) joystickEl.classList.remove('hidden');
+    var dpadEl = document.getElementById('mobile-dpad');
+    if (dpadEl) dpadEl.classList.remove('hidden');
+  }
+
+  // Animate the box flying back / shrinking out of view
+  inspectBox.setAttribute('animation__pos', {
+    property: 'position',
+    to: '0 0 -2.5',
+    dur: 400,
+    easing: 'easeInBack'
+  });
+  inspectBox.setAttribute('animation__scale', {
+    property: 'scale',
+    to: '0.05 0.05 0.05',
+    dur: 400,
+    easing: 'easeInBack'
+  });
+
+  // Clean up after animation finishes
+  setTimeout(() => {
+    const camera = document.getElementById('camera');
+    if (inspectBox.parentNode === camera) {
+      camera.removeChild(inspectBox);
+    }
+
+    // Clean up dynamically created canvas from DOM
+    const canvases = document.querySelectorAll('[id^="canvas-back-"]');
+    canvases.forEach(canvas => canvas.remove());
+
+    // Restore controls
+    const rig = document.getElementById('rig');
+    if (rig && rig.components['wasd-controls']) {
+      rig.components['wasd-controls'].play();
+    }
+    if (rig && rig.components['step-movement']) {
+      rig.components['step-movement'].isInspecting = false;
+    }
+
+    const cameraEl = document.getElementById('camera');
+    if (cameraEl && cameraEl.components['look-controls']) {
+      cameraEl.components['look-controls'].play();
+    }
+
+    // Restore pointer lock crosshair if not on mobile
+    if (!isMobileDevice()) {
+      document.getElementById('crosshair').classList.remove('hidden');
+    }
+
+    isInspecting = false;
+    activeInspectMovie = null;
+    originalClickedEntity = null;
+  }, 400);
+}
+
+// Draw a beautifully designed retro VHS/DVD back cover on a canvas
+function generateDVDBackCover(movie) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 512;
+  canvas.height = 720;
+  const ctx = canvas.getContext('2d');
+
+  // Background: Dark retro cardboard texture / Blockbuster blue
+  ctx.fillStyle = '#001c58';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Outer border (retro gold)
+  ctx.strokeStyle = '#ffd700';
+  ctx.lineWidth = 12;
+  ctx.strokeRect(6, 6, canvas.width - 12, canvas.height - 12);
+
+  // Inner border
+  ctx.strokeStyle = '#ffffff';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+
+  // Logo banner at the top
+  ctx.fillStyle = '#ffd700';
+  ctx.fillRect(20, 20, canvas.width - 40, 70);
+
+  ctx.fillStyle = '#002d8a';
+  ctx.font = 'bold 36px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('BLOCKBUSTER VIDEO', canvas.width / 2, 68);
+
+  // Movie Title
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 32px sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText(movie.title.toUpperCase(), 40, 140);
+
+  // Movie Meta Details
+  ctx.fillStyle = '#ffd700';
+  ctx.font = 'bold 16px sans-serif';
+  ctx.fillText(`YEAR: ${movie.year}   |   RATING: ★ ${movie.rating}/10`, 40, 175);
+
+  // Divider line
+  ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(40, 195);
+  ctx.lineTo(canvas.width - 40, 195);
+  ctx.stroke();
+
+  // Movie Synopsis
+  ctx.fillStyle = '#e2e8f0';
+  ctx.font = '18px sans-serif';
+  const synopsis = movieSynopses[movie.title] || `Experience the spectacular motion picture event '${movie.title}' now. Grab a copy, grab some popcorn, and enjoy a classic Blockbuster night at home!`;
+  wrapText(ctx, synopsis, 40, 235, canvas.width - 80, 26);
+
+  // Terms and conditions box
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+  ctx.fillRect(40, 420, canvas.width - 80, 110);
+  ctx.strokeStyle = 'rgba(255, 215, 0, 0.3)';
+  ctx.strokeRect(40, 420, canvas.width - 80, 110);
+
+  ctx.fillStyle = '#ffd700';
+  ctx.font = 'bold 13px sans-serif';
+  ctx.fillText('RENTAL RULES & TERMS', 55, 445);
+  ctx.fillStyle = '#cbd5e1';
+  ctx.font = '12px sans-serif';
+  ctx.fillText('1. One-night rental. Must be returned by 12:00 PM tomorrow.', 55, 470);
+  ctx.fillText('2. A late fee of $2.50 per day will be charged for overdue items.', 55, 490);
+  ctx.fillText('3. Please rewind cassette tapes before returning to drop box.', 55, 510);
+
+  // Barcode container
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(320, 560, 150, 80);
+  
+  // Draw barcode lines
+  ctx.fillStyle = '#000000';
+  let barX = 330;
+  while (barX < 460) {
+    let w = Math.random() > 0.5 ? 4 : 2;
+    ctx.fillRect(barX, 570, w, 50);
+    barX += w + (Math.random() > 0.4 ? 2 : 4);
+  }
+  ctx.font = '10px monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText('2026857 004128', 395, 632);
+
+  // "Be Kind Rewind" badge on the left
+  ctx.fillStyle = '#ff0055';
+  ctx.beginPath();
+  ctx.arc(110, 600, 40, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = '#ffffff';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 11px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('BE KIND', 110, 595);
+  ctx.fillText('REWIND!', 110, 612);
+
+  return canvas;
+}
+
+function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+  const words = text.split(' ');
+  let line = '';
+  for (let n = 0; n < words.length; n++) {
+    let testLine = line + words[n] + ' ';
+    let metrics = ctx.measureText(testLine);
+    let testWidth = metrics.width;
+    if (testWidth > maxWidth && n > 0) {
+      ctx.fillText(line, x, y);
+      line = words[n] + ' ';
+      y += lineHeight;
+    } else {
+      line = testLine;
+    }
+  }
+  ctx.fillText(line, x, y);
+  return y;
+}
+
+// Drag / Swipe listeners to rotate the 3D DVD Box on its axes
+function initRotationHandlers() {
+  function onPointerDown(e) {
+    if (!isInspecting) return;
+    isDragging = true;
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    previousMousePosition = { x: clientX, y: clientY };
+  }
+
+  function onPointerMove(e) {
+    if (!isDragging || !isInspecting) return;
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+    const deltaX = clientX - previousMousePosition.x;
+    const deltaY = clientY - previousMousePosition.y;
+
+    currentRotation.y += deltaX * 0.4;
+    currentRotation.x += deltaY * 0.4;
+
+    // Clamp vertical tilt
+    currentRotation.x = Math.max(-55, Math.min(55, currentRotation.x));
+
+    const box = document.getElementById('inspection-box');
+    if (box) {
+      box.setAttribute('rotation', `${currentRotation.x} ${currentRotation.y} 0`);
+    }
+
+    previousMousePosition = { x: clientX, y: clientY };
+  }
+
+  function onPointerUp() {
+    isDragging = false;
+  }
+
+  window.addEventListener('mousedown', onPointerDown);
+  window.addEventListener('mousemove', onPointerMove);
+  window.addEventListener('mouseup', onPointerUp);
+
+  window.addEventListener('touchstart', onPointerDown, { passive: true });
+  window.addEventListener('touchmove', onPointerMove, { passive: true });
+  window.addEventListener('touchend', onPointerUp);
+}
+
+function initInspectionControls() {
+  const btnClose = document.getElementById('inspect-btn-close');
+  const btnImdb = document.getElementById('inspect-btn-imdb');
+
+  if (btnClose) {
+    btnClose.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      stopInspection();
+    });
+  }
+
+  if (btnImdb) {
+    btnImdb.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (activeInspectMovie) {
+        window.open(activeInspectMovie.imdb, '_blank');
+      }
+    });
+  }
+
+  initRotationHandlers();
+}
+
 // ===== INIT =====
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1744,5 +2194,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initPointerLock();
   initMobileControls();
+  initInspectionControls();
 });
+
 

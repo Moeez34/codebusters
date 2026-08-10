@@ -390,6 +390,165 @@ body {
   border-color: rgba(0, 255, 100, 0.3);
 }
 
+/* ===== 3D DVD INSPECTION OVERLAY ===== */
+.inspect-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  z-index: 4000;
+  pointer-events: none; /* Let user swipe/drag the canvas directly to rotate */
+  padding-bottom: 40px;
+}
+
+.inspect-overlay.hidden {
+  display: none !important;
+}
+
+.inspect-hud-card {
+  pointer-events: auto; /* Re-enable pointer events for HUD buttons */
+  background: rgba(0, 0, 0, 0.88);
+  border: 2px solid rgba(255, 215, 0, 0.25);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+  border-radius: 16px;
+  width: 90%;
+  max-width: 520px;
+  padding: 20px 24px;
+  text-align: center;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: slide-up-hud 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slide-up-hud {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.inspect-hud-card h2 {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 2.2rem;
+  letter-spacing: 2px;
+  color: #ffd700;
+  margin-bottom: 4px;
+}
+
+#inspect-meta {
+  font-size: 0.95rem;
+  color: #999;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.inspect-desc {
+  font-size: 0.88rem;
+  color: #ccc;
+  margin-bottom: 20px;
+  line-height: 1.4;
+  animation: pulse-text-inspect 2s ease-in-out infinite;
+}
+
+@keyframes pulse-text-inspect {
+  0%, 100% { color: #ccc; }
+  50% { color: #ffd700; }
+}
+
+.inspect-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.inspect-btn {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 14px 24px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 1px;
+}
+
+.btn-secondary {
+  background: rgba(0, 45, 138, 0.8); /* Blockbuster blue */
+  border: 2px solid #ffd700;
+  color: #ffd700;
+}
+
+.btn-secondary:hover {
+  background: #ffd700;
+  color: #002d8a;
+}
+
+.btn-primary {
+  background: #00ff64;
+  color: #000;
+  box-shadow: 0 0 15px rgba(0, 255, 100, 0.25);
+}
+
+.btn-primary:hover {
+  background: #00e054;
+  transform: scale(1.03);
+  box-shadow: 0 0 20px rgba(0, 255, 100, 0.4);
+}
+
+/* ===== VIRTUAL HANDS OVERLAY ===== */
+.hands-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3900;
+  pointer-events: none; /* Let click pass through to canvas */
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 5%;
+}
+
+.hands-overlay.hidden {
+  display: none !important;
+}
+
+.virtual-hand {
+  width: 25vw;
+  max-width: 260px;
+  height: auto;
+  color: rgba(255, 255, 255, 0.4); /* Translucent styled hands */
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
+}
+
+.left-hand {
+  transform: translateY(20px) rotate(15deg);
+  transform-origin: bottom left;
+  animation: slide-in-left-hand 0.5s ease forwards;
+}
+
+.right-hand {
+  transform: translateY(20px) rotate(-15deg);
+  transform-origin: bottom right;
+  animation: slide-in-right-hand 0.5s ease forwards;
+}
+
+@keyframes slide-in-left-hand {
+  from { transform: translateY(120px) rotate(35deg); opacity: 0; }
+  to { transform: translateY(10px) rotate(5deg); opacity: 1; }
+}
+
+@keyframes slide-in-right-hand {
+  from { transform: translateY(120px) rotate(-35deg); opacity: 0; }
+  to { transform: translateY(10px) rotate(-5deg); opacity: 1; }
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 600px) {
   .loading-logo {
