@@ -644,6 +644,26 @@ body {
   background: #000000;
 }
 
+.trailer-link-wrapper {
+  padding: 10px;
+  text-align: center;
+}
+
+.trailer-youtube-link {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffd700;
+  text-decoration: none;
+  border-bottom: 1px dashed #ffd700;
+  transition: all 0.2s ease;
+}
+
+.trailer-youtube-link:hover {
+  color: #ffffff;
+  border-bottom-color: #ffffff;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 600px) {
   .loading-logo {

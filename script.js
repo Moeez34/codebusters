@@ -2382,9 +2382,10 @@ let isBgmPlaying = false;
 function startBgm() {
   if (bgmAudio) return;
   
-  bgmAudio = new Audio('https://assets.mixkit.co/music/preview/mixkit-retro-futurism-150.mp3');
+  // Use a highly reliable, hotlink-friendly open CDN audio source
+  bgmAudio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3');
   bgmAudio.loop = true;
-  bgmAudio.volume = 0.45; // Gentle ambient volume
+  bgmAudio.volume = 0.35; // Comfortable background ambient volume
 
   bgmAudio.play()
     .then(() => {
@@ -2394,6 +2395,18 @@ function startBgm() {
     .catch((err) => {
       console.warn('BGM Autoplay blocked: playing on interaction.', err);
     });
+
+  // Autoplay fallback: click anywhere on the page to trigger audio context / resume
+  window.addEventListener('click', () => {
+    if (bgmAudio && !isBgmPlaying && !isMusicMuted) {
+      bgmAudio.play()
+        .then(() => {
+          isBgmPlaying = true;
+          updateBgmButtonUI();
+        })
+        .catch(err => console.warn(err));
+    }
+  }, { once: true });
 }
 
 function pauseBgm() {
@@ -2458,6 +2471,7 @@ function openTrailer() {
 
   const trailerModal = document.getElementById('trailer-modal');
   const iframe = document.getElementById('trailer-iframe');
+  const fallbackLink = document.getElementById('trailer-youtube-link');
   if (!trailerModal || !iframe) return;
 
   const videoId = movieTrailers[activeInspectMovie.title];
@@ -2465,7 +2479,14 @@ function openTrailer() {
     // Pause background music while trailer plays
     pauseBgm();
     
-    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1`;
+    // Set origin parameter to satisfy YouTube embed security policies on custom domains
+    const origin = window.location.origin;
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1&origin=${encodeURIComponent(origin)}`;
+    
+    if (fallbackLink) {
+      fallbackLink.href = `https://www.youtube.com/watch?v=${videoId}`;
+    }
+    
     trailerModal.classList.remove('hidden');
   } else {
     window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(activeInspectMovie.title + ' official trailer')}`, '_blank');
@@ -2475,10 +2496,14 @@ function openTrailer() {
 function closeTrailer() {
   const trailerModal = document.getElementById('trailer-modal');
   const iframe = document.getElementById('trailer-iframe');
+  const fallbackLink = document.getElementById('trailer-youtube-link');
   if (!trailerModal || !iframe) return;
 
   // Clear iframe source to immediately halt playback and unload
   iframe.src = '';
+  if (fallbackLink) {
+    fallbackLink.href = '';
+  }
   trailerModal.classList.add('hidden');
 
   // Resume background music loop
