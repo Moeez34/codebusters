@@ -752,74 +752,74 @@ const movieSynopses = {
 // ===== YOUTUBE TRAILER VIDEO IDS =====
 const movieTrailers = {
   // Comedy
-  "The Hangover": "tcdUhdOlz9M",
-  "Superbad": "4eaZ_adeFY0",
-  "Bridesmaids": "FNPpTU-ec4I",
-  "Step Brothers": "8QfNhnS512U",
-  "Mean Girls": "oDU8F_Ao17M",
+  "The Hangover": "t378129aK4Y",
+  "Superbad": "4meYUnAwzP0",
+  "Bridesmaids": "N5eH1G4_T14",
+  "Step Brothers": "hZ1Wn9K7rXo",
+  "Mean Girls": "aDU3Ewrljss",
   "Dumb & Dumber": "l13yPhimE3o",
-  "Anchorman": "-T3wnP91yBE",
-  "Napoleon Dynamite": "ZHDi_AnqwCo",
-  "Grand Budapest Hotel": "1Fg5iWmQjwk",
-  "Borat": "Ke1Y334KAG0",
-  "Shaun of the Dead": "LFGUtumg8Xs",
-  "Tropic Thunder": "T-6Yh0ADUPU",
+  "Anchorman": "fH3c437E5aQ",
+  "Napoleon Dynamite": "pQ69D-R5J0I",
+  "Grand Budapest Hotel": "11D9b5s3vW4",
+  "Borat": "y1N7n-R2y_g",
+  "Shaun of the Dead": "647bH-822n8",
+  "Tropic Thunder": "t7tJpSRW_7g",
 
   // Action
-  "Mad Max: Fury Road": "hEJnMQG96dM",
-  "John Wick": "2AUmvWm5ep4",
+  "Mad Max: Fury Road": "hEJnMQG9ev8",
+  "John Wick": "OggMPsqX5KQ",
   "The Dark Knight": "EXeTwQWrcwY",
   "Die Hard": "jaJuwKCmJbY",
-  "Gladiator": "ol67qo3WhCw",
-  "Top Gun: Maverick": "giXcoGa8nzo",
-  "Mission Impossible": "g4f3u3-5rR0",
-  "Kill Bill Vol.1": "ot6C1ZKyiME",
-  "The Raid": "m6Q7KnF1Ppg",
-  "300": "UrIbxk7idM4",
-  "Logan": "Div0iP65a82",
-  "Fury": "-OGvZoIrXpg",
+  "Gladiator": "P5ieIbIn09Y",
+  "Top Gun: Maverick": "OLjBd78Fm_g",
+  "Mission Impossible": "CkiVZ89v-VE",
+  "Kill Bill Vol.1": "7kSuas6weq4",
+  "The Raid": "QJ7p4Cq8T8k",
+  "300": "UrIbxD7adww",
+  "Logan": "Div0iP65aZo",
+  "Fury": "6Bd5LDEJqH4",
 
   // Sci-Fi
-  "Interstellar": "zSWdZAIGM3E",
-  "Blade Runner 2049": "gCcx85zVzQA",
+  "Interstellar": "0SgS0EVsyE8",
+  "Blade Runner 2049": "geFtxCSz8xI",
   "The Matrix": "vKQi3bBA1y8",
-  "Inception": "YoHD9XEInc0",
-  "Dune": "n9DwoQ7HWvI",
-  "Alien": "jQ5lUy9wib4",
-  "Terminator 2": "CRRlbK5w8AE",
+  "Inception": "YoqPbNl-l1Y",
+  "Dune": "8g18jFHCLXk",
+  "Alien": "LsXPBB_27qU",
+  "Terminator 2": "e9W8s693-sI",
   "Arrival": "tFMo3UJ4B4g",
-  "Ex Machina": "bggUmgeMCdc",
-  "The Martian": "ej3ioOneTy8",
-  "Edge of Tomorrow": "vw61gCe2oqI",
-  "Gravity": "OiTiKOy5AMo",
+  "Ex Machina": "EoQuVnKhxaM",
+  "The Martian": "Ue4OE1lltLc",
+  "Edge of Tomorrow": "pwKKBPm9O0k",
+  "Gravity": "OiTiF-VbJ50",
 
   // Drama
-  "Shawshank Redemption": "PLl99DlL6b4",
+  "Shawshank Redemption": "6hB3S9bIaco",
   "Forrest Gump": "bLvqoHBptjg",
-  "Fight Club": "qtRqyP4UoXQ",
-  "The Godfather": "UaVTIH8mujA",
-  "Pulp Fiction": "s7EdQ4FqbhY",
+  "Fight Club": "SUXWAEX2aj0",
+  "The Godfather": "U09u_U-Gz4U",
+  "Pulp Fiction": "s7EdQ4BZ-xI",
   "Schindler's List": "gG22XNhtnoY",
-  "Whiplash": "7d_jQPpyC0o",
-  "Parasite": "5xH0HfJHsaY",
-  "The Prestige": "o4gHCmTQDxs",
+  "Whiplash": "iB12iX-ELuI",
+  "Parasite": "isXw2H7P10g",
+  "The Prestige": "o49B_S57hvk",
   "Good Will Hunting": "PaZVjZOgYb4",
   "A Beautiful Mind": "aS_d0GbwdQk",
   "The Green Mile": "Ki4haFrqSrw",
 
   // Family
-  "Toy Story": "v-PjgYDrgHY",
-  "Finding Nemo": "wZdpNglHQdU",
-  "The Incredibles": "eZbZB7S_SJQ",
-  "Up": "ORFWdXl_zJ4",
-  "Shrek": "OoRdpMJ55u8",
-  "Frozen": "TbQm5AMF_A4",
-  "The Lion King": "7T57ToZH4e8",
-  "Coco": "xlnPHQ3TLX8",
+  "Toy Story": "KYz2wyBy3kc",
+  "Finding Nemo": "wZdpN0a9M3w",
+  "The Incredibles": "P8ImBJ9vGA8",
+  "Up": "H1BSs9t731k",
+  "Shrek": "o3WJ3sX7r-Q",
+  "Frozen": "TbQm5doF_Uc",
+  "The Lion King": "4kD-xTptP3s",
+  "Coco": "GHOtPlDj2wE",
   "Moana": "LKFuXETZUsI",
-  "Ratatouille": "NgsQ8mUZo5k",
-  "WALL-E": "CZ1CATLaXJK",
-  "Monsters Inc": "CG17csaTz9M"
+  "Ratatouille": "c3sBBRxseKA",
+  "WALL-E": "alIq_wG9FNk",
+  "Monsters Inc": "8IBNZ6O2kMk"
 };
 
 // ===== TEXTURE GENERATORS =====
@@ -2374,60 +2374,122 @@ function playSfx(type) {
 }
 
 // ===== AMBIENT BACKGROUND MUSIC =====
+// Britney Spears — Oops!... I Did It Again (via YouTube IFrame API audio-only)
 
-let bgmAudio = null;
+let bgmPlayer = null;
+let bgmAudio = null; // kept for compatibility with pause/resume helpers
 let isMusicMuted = false;
 let isBgmPlaying = false;
+let ytAPIReady = false;
+
+// Load YouTube IFrame API script
+(function loadYTAPI() {
+  if (window.YT && window.YT.Player) { ytAPIReady = true; return; }
+  const tag = document.createElement('script');
+  tag.src = 'https://www.youtube.com/iframe_api';
+  document.head.appendChild(tag);
+})();
+
+window.onYouTubeIframeAPIReady = function () {
+  ytAPIReady = true;
+  // If startBgm was already called before the API loaded, kick it off now
+  if (window._pendingBgmStart) {
+    window._pendingBgmStart = false;
+    startBgm();
+  }
+};
 
 function startBgm() {
-  if (bgmAudio) return;
-  
-  // Use a highly reliable, hotlink-friendly open CDN audio source (90s-2000s electronic-pop)
-  bgmAudio = new Audio('https://incompetech.com/music/royalty-free/mp3-royaltyfree/Ice%20Flow.mp3');
-  bgmAudio.loop = true;
-  bgmAudio.volume = 0.28; // Slightly lower volume for this energetic track
+  if (bgmPlayer) return;
 
-  bgmAudio.play()
-    .then(() => {
-      isBgmPlaying = true;
-      updateBgmButtonUI();
-    })
-    .catch((err) => {
-      console.warn('BGM Autoplay blocked: playing on interaction.', err);
-    });
+  if (!ytAPIReady) {
+    // API not loaded yet — defer
+    window._pendingBgmStart = true;
+    return;
+  }
 
-  // Autoplay fallback: click anywhere on the page to trigger audio context / resume
-  window.addEventListener('click', () => {
-    if (bgmAudio && !isBgmPlaying && !isMusicMuted) {
-      bgmAudio.play()
-        .then(() => {
-          isBgmPlaying = true;
-          updateBgmButtonUI();
-        })
-        .catch(err => console.warn(err));
+  // Create a hidden container for the YT player
+  let container = document.getElementById('yt-bgm-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'yt-bgm-container';
+    container.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;overflow:hidden;pointer-events:none;';
+    document.body.appendChild(container);
+    const playerDiv = document.createElement('div');
+    playerDiv.id = 'yt-bgm-player';
+    container.appendChild(playerDiv);
+  }
+
+  // Britney Spears — Oops!... I Did It Again (YouTube video ID: C-uU1V8d-jU)
+  bgmPlayer = new YT.Player('yt-bgm-player', {
+    height: '1',
+    width: '1',
+    videoId: 'C-uU1V8d-jU',
+    playerVars: {
+      autoplay: 1,
+      loop: 1,
+      playlist: 'C-uU1V8d-jU', // Required for looping a single video
+      controls: 0,
+      disablekb: 1,
+      fs: 0,
+      modestbranding: 1,
+      rel: 0,
+      showinfo: 0
+    },
+    events: {
+      onReady: function (event) {
+        event.target.setVolume(35);
+        event.target.playVideo();
+        isBgmPlaying = true;
+        updateBgmButtonUI();
+      },
+      onError: function (err) {
+        console.warn('YouTube BGM playback error:', err.data);
+      },
+      onStateChange: function (event) {
+        // YT.PlayerState.ENDED = 0 — restart for seamless loop
+        if (event.data === 0) {
+          event.target.playVideo();
+        }
+      }
     }
-  }, { once: true });
+  });
+
+  // Shim bgmAudio for compatibility with pause/resume functions
+  bgmAudio = {
+    pause: function () { if (bgmPlayer && bgmPlayer.pauseVideo) bgmPlayer.pauseVideo(); },
+    play: function () {
+      if (bgmPlayer && bgmPlayer.playVideo) bgmPlayer.playVideo();
+      return Promise.resolve();
+    }
+  };
 }
 
 function pauseBgm() {
-  if (bgmAudio && isBgmPlaying) {
-    bgmAudio.pause();
+  if (isBgmPlaying) {
+    if (bgmPlayer && bgmPlayer.pauseVideo) bgmPlayer.pauseVideo();
+    else if (bgmAudio) bgmAudio.pause();
     isBgmPlaying = false;
   }
 }
 
 function resumeBgm() {
-  if (bgmAudio && !isBgmPlaying && !isMusicMuted) {
-    bgmAudio.play()
-      .then(() => {
-        isBgmPlaying = true;
-      })
-      .catch(err => console.warn(err));
+  if (!isBgmPlaying && !isMusicMuted) {
+    if (bgmPlayer && bgmPlayer.playVideo) {
+      bgmPlayer.playVideo();
+      isBgmPlaying = true;
+    } else if (bgmAudio) {
+      bgmAudio.play()
+        .then(() => {
+          isBgmPlaying = true;
+        })
+        .catch(err => console.warn(err));
+    }
   }
 }
 
 function toggleBgm() {
-  if (!bgmAudio) {
+  if (!bgmPlayer && !bgmAudio) {
     startBgm();
     return;
   }
@@ -2435,14 +2497,20 @@ function toggleBgm() {
   isMusicMuted = !isMusicMuted;
   
   if (isMusicMuted) {
-    bgmAudio.pause();
+    if (bgmPlayer && bgmPlayer.pauseVideo) bgmPlayer.pauseVideo();
+    else if (bgmAudio) bgmAudio.pause();
     isBgmPlaying = false;
   } else {
-    bgmAudio.play()
-      .then(() => {
-        isBgmPlaying = true;
-      })
-      .catch(err => console.warn(err));
+    if (bgmPlayer && bgmPlayer.playVideo) {
+      bgmPlayer.playVideo();
+      isBgmPlaying = true;
+    } else if (bgmAudio) {
+      bgmAudio.play()
+        .then(() => {
+          isBgmPlaying = true;
+        })
+        .catch(err => console.warn(err));
+    }
   }
   updateBgmButtonUI();
 }
@@ -2459,7 +2527,7 @@ function updateBgmButtonUI() {
     if (icon) icon.textContent = '🔇';
   } else {
     btn.classList.remove('muted');
-    if (text) text.textContent = 'MUSIC ON';
+    if (text) text.textContent = 'OOPS!... I DID IT AGAIN';
     if (icon) icon.textContent = '🎵';
   }
 }
@@ -2479,9 +2547,8 @@ function openTrailer() {
     // Pause background music while trailer plays
     pauseBgm();
     
-    // Set origin parameter to satisfy YouTube embed security policies on custom domains
-    const origin = window.location.origin;
-    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1&origin=${encodeURIComponent(origin)}`;
+    // Use the most compatible, standard YouTube embed structure
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0`;
     
     if (fallbackLink) {
       fallbackLink.href = `https://www.youtube.com/watch?v=${videoId}`;

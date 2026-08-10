@@ -645,23 +645,30 @@ body {
 }
 
 .trailer-link-wrapper {
-  padding: 10px;
+  padding: 14px 10px;
   text-align: center;
 }
 
-.trailer-youtube-link {
+.trailer-youtube-btn {
+  display: inline-block;
   font-family: 'Outfit', sans-serif;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #ffd700;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #002d8a; /* Blockbuster blue */
+  background: #ffd700; /* Blockbuster gold */
+  padding: 12px 24px;
+  border-radius: 30px;
   text-decoration: none;
-  border-bottom: 1px dashed #ffd700;
   transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
+  letter-spacing: 0.5px;
 }
 
-.trailer-youtube-link:hover {
-  color: #ffffff;
-  border-bottom-color: #ffffff;
+.trailer-youtube-btn:hover {
+  background: #ffffff;
+  color: #000000;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.35);
 }
 
 /* ===== RESPONSIVE ===== */
