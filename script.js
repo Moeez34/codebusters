@@ -1210,6 +1210,10 @@ AFRAME.registerComponent('step-movement', {
     this.joystickX = 0;
     this.joystickY = 0;
 
+    // D-pad state
+    this.dpadX = 0;
+    this.dpadY = 0;
+
     // Bind handlers
     this._onDeviceMotion = this._onDeviceMotion.bind(this);
     this._onDeviceOrientation = this._onDeviceOrientation.bind(this);
@@ -1401,6 +1405,26 @@ AFRAME.registerComponent('step-movement', {
       moved = true;
     }
 
+    // === DPAD ARROWS ===
+    if (this.dpadX !== 0 || this.dpadY !== 0) {
+      var speed = 4.0;
+
+      var forward = new THREE.Vector3(0, 0, -1);
+      camera.object3D.getWorldDirection(forward);
+      forward.y = 0;
+      forward.normalize();
+
+      var right = new THREE.Vector3();
+      right.crossVectors(forward, new THREE.Vector3(0, 1, 0)).normalize();
+
+      var moveX = this.dpadX * speed * dt;
+      var moveZ = -this.dpadY * speed * dt; // negative Y is forward
+
+      pos.x += forward.x * moveZ + right.x * moveX;
+      pos.z += forward.z * moveZ + right.z * moveX;
+      moved = true;
+    }
+
     if (moved) {
       this.el.setAttribute('position', pos);
     }
@@ -1509,6 +1533,69 @@ function initVirtualJoystick() {
   }
 }
 
+// ===== MOBILE: VIRTUAL D-PAD CONTROLLER =====
+
+function initDpad() {
+  var dpadEl = document.getElementById('mobile-dpad');
+  if (!dpadEl) return;
+
+  var btnUp = document.getElementById('dpad-up');
+  var btnDown = document.getElementById('dpad-down');
+  var btnLeft = document.getElementById('dpad-left');
+  var btnRight = document.getElementById('dpad-right');
+
+  function getStepComponent() {
+    var rig = document.getElementById('rig');
+    if (!rig) return null;
+    return rig.components['step-movement'];
+  }
+
+  function setupDpadButton(btn, dx, dy) {
+    if (!btn) return;
+
+    function handlePress(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var comp = getStepComponent();
+      if (comp) {
+        comp.dpadX = dx;
+        comp.dpadY = dy;
+      }
+    }
+
+    function handleRelease(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var comp = getStepComponent();
+      if (comp) {
+        if (comp.dpadX === dx && comp.dpadY === dy) {
+          comp.dpadX = 0;
+          comp.dpadY = 0;
+        }
+      }
+    }
+
+    // Touch events for mobile
+    btn.addEventListener('touchstart', handlePress, { passive: false });
+    btn.addEventListener('touchend', handleRelease, { passive: false });
+    btn.addEventListener('touchcancel', handleRelease, { passive: false });
+
+    // Mouse events for testing on desktop
+    btn.addEventListener('mousedown', handlePress);
+    btn.addEventListener('mouseup', handleRelease);
+    btn.addEventListener('mouseleave', handleRelease);
+  }
+
+  // Up: move forward (dx=0, dy=-1)
+  setupDpadButton(btnUp, 0, -1);
+  // Down: move backward (dx=0, dy=1)
+  setupDpadButton(btnDown, 0, 1);
+  // Left: strafe left (dx=-1, dy=0)
+  setupDpadButton(btnLeft, -1, 0);
+  // Right: strafe right (dx=1, dy=0)
+  setupDpadButton(btnRight, 1, 0);
+}
+
 // ===== POINTER LOCK & CROSSHAIR =====
 
 function initPointerLock() {
@@ -1541,7 +1628,8 @@ function initPointerLock() {
 
 function isMobileDevice() {
   return /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-    ('ontouchstart' in window && window.innerWidth <= 1024);
+    ('ontouchstart' in window) ||
+    (window.innerWidth <= 1024);
 }
 
 function requestMotionAndEnableWalking() {
@@ -1606,16 +1694,21 @@ function enableStepDetection() {
 function initMobileControls() {
   if (!isMobileDevice()) return;
 
-  // Show the joystick
+  // Show the joystick (on bottom-left)
   var joystickEl = document.getElementById('mobile-joystick');
   if (joystickEl) joystickEl.classList.remove('hidden');
 
-  // Show the debug indicator
-  var debugEl = document.getElementById('mobile-debug');
-  if (debugEl) debugEl.classList.remove('hidden');
+  // Show the D-pad (on bottom-right)
+  var dpadEl = document.getElementById('mobile-dpad');
+  if (dpadEl) dpadEl.classList.remove('hidden');
 
-  // Init joystick touch handling
+  // Keep debug indicator hidden to keep the screen clean
+  var debugEl = document.getElementById('mobile-debug');
+  if (debugEl) debugEl.classList.add('hidden');
+
+  // Init controllers
   initVirtualJoystick();
+  initDpad();
 
   // On Android, we can auto-enable step detection without a user gesture
   if (typeof DeviceMotionEvent !== 'undefined' &&
@@ -1633,7 +1726,6 @@ function initMobileControls() {
       }
     }
   }
-  // On iOS, walking will be enabled when the user taps the overlay (user gesture required)
 }
 
 // ===== INIT =====
